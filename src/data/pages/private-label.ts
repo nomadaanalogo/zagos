@@ -1,16 +1,16 @@
 export const privateLabel = {
   es: {
     seo: {
-      title: 'Manufactura Private Label de alimentos | ZAGOS Colombia',
+      title: 'Manufactura de alimentos con marca privada | ZAGOS Colombia',
       description:
         'Desarrolla productos a base de ajíes, vegetales y hierbas bajo tu marca, con soporte de formulación, manufactura escalable y opciones de empaque.',
     },
-    breadcrumb: 'Private Label',
+    breadcrumb: 'Marca privada',
     hero: {
-      eyebrow: 'Private Label · Contract manufacturing',
+      eyebrow: 'Marca privada · Contract manufacturing',
       title: 'Tu marca. *Nuestra experiencia de manufactura.*',
       lead: 'Ayudamos a empresas, distribuidores e importadores a convertir una idea o una especificación existente en un producto fabricable bajo su propia marca.',
-      cta: 'Iniciar un proyecto Private Label',
+      cta: 'Iniciar un proyecto de marca privada',
       image: { photo: 'producto/frascos-zagos-retail', alt: 'Frascos ZAGOS de ají cayena, cebolla junca y cilantro', label: 'Doypacks, galones y empaques reales — 4:3' },
     },
     scope: {
@@ -35,43 +35,43 @@ export const privateLabel = {
       title: 'Formatos disponibles',
       items: [
         'Doypacks / pouches para referencias seleccionadas',
-        'Bolsas Foodservice',
+        'Bolsas foodservice',
         'Formatos de galón',
         'Frascos y formatos retail según referencia',
         'Barriles industriales y empaque a granel',
         'Configuración de cajas a la medida, sujeta a volumen y viabilidad de empaque',
       ],
-      image: { photo: 'industria/empaque-granel-aji-cebolla-cilantro', alt: 'Ají, cebolla y cilantro deshidratados en empaque a granel', label: 'Barriles, bolsas Foodservice, galones — 4:3' },
+      image: { photo: 'industria/empaque-granel-aji-cebolla-cilantro', alt: 'Ají, cebolla y cilantro deshidratados en empaque a granel', label: 'Barriles, bolsas foodservice, galones — 4:3' },
     },
     trust: {
       eyebrow: 'Confianza',
       title: 'Por qué trabajar con ZAGOS',
       cards: [
         { icon: 'lock', title: 'Confidencialidad', text: 'Manejo confidencial de cada proyecto.' },
-        { icon: 'factory', title: 'Experiencia industrial', text: 'Experiencia en proyectos industriales y Foodservice.' },
+        { icon: 'factory', title: 'Experiencia industrial', text: 'Experiencia en proyectos industriales y foodservice.' },
         { icon: 'file', title: 'Documentación', text: 'Documentación técnica y trazabilidad.' },
         { icon: 'globe', title: 'Orientación exportadora', text: 'Operación orientada a la exportación.' },
         { icon: 'layers', title: 'Empaque escalable', text: 'Configuraciones de empaque a la medida cuando los volúmenes objetivo lo justifican.' },
       ],
     },
     cta: {
-      title: 'Iniciemos tu proyecto Private Label',
+      title: 'Iniciemos tu proyecto de marca privada',
       text: 'Comparte producto, mercado, volumen esperado y formato. Revisamos la viabilidad y te proponemos el siguiente paso.',
-      button: 'Iniciar un proyecto Private Label',
+      button: 'Iniciar un proyecto de marca privada',
     },
   },
   en: {
     seo: {
-      title: 'Private Label Food Manufacturing | ZAGOS Colombia',
+      title: 'Private label Food Manufacturing | ZAGOS Colombia',
       description:
         'Develop pepper, vegetable and herb-based products under your brand with formulation support, scalable manufacturing and packaging options.',
     },
-    breadcrumb: 'Private Label',
+    breadcrumb: 'Private label',
     hero: {
-      eyebrow: 'Private Label · Contract manufacturing',
+      eyebrow: 'Private label · Contract manufacturing',
       title: 'Your brand. *Our manufacturing expertise.*',
       lead: 'We help companies, distributors and importers turn an idea or an existing specification into a manufacturable product under their own brand.',
-      cta: 'Start a Private Label project',
+      cta: 'Start a private label project',
       image: { photo: 'producto/frascos-zagos-retail', alt: 'ZAGOS jars of cayenne pepper, scallions and cilantro', label: 'Real doypacks, gallons and packaging — 4:3' },
     },
     scope: {
@@ -102,23 +102,23 @@ export const privateLabel = {
         'Industrial drums and bulk packaging',
         'Custom case configuration subject to volume and packaging feasibility',
       ],
-      image: { photo: 'industria/empaque-granel-aji-cebolla-cilantro', alt: 'Dehydrated pepper, onion and cilantro in bulk packaging', label: 'Drums, Foodservice bags, gallons — 4:3' },
+      image: { photo: 'industria/empaque-granel-aji-cebolla-cilantro', alt: 'Dehydrated pepper, onion and cilantro in bulk packaging', label: 'Drums, foodservice bags, gallons — 4:3' },
     },
     trust: {
       eyebrow: 'Trust',
       title: 'Why work with ZAGOS',
       cards: [
         { icon: 'lock', title: 'Confidentiality', text: 'Confidential project handling.' },
-        { icon: 'factory', title: 'Industrial experience', text: 'Industrial and Foodservice experience.' },
+        { icon: 'factory', title: 'Industrial experience', text: 'Industrial and foodservice experience.' },
         { icon: 'file', title: 'Documentation', text: 'Technical documentation and traceability.' },
         { icon: 'globe', title: 'Export oriented', text: 'Export-oriented operation.' },
         { icon: 'layers', title: 'Scalable packaging', text: 'Custom packaging configurations when target volumes justify them.' },
       ],
     },
     cta: {
-      title: "Let's start your Private Label project",
+      title: "Let's start your private label project",
       text: 'Share the product, market, expected volume and format. We will review feasibility and propose the next step.',
-      button: 'Start a Private Label project',
+      button: 'Start a private label project',
     },
   },
 };

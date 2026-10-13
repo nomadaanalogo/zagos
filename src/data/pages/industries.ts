@@ -1,16 +1,16 @@
 export const industries = {
   es: {
     seo: {
-      title: 'Ingredientes por industria | Alimentos y Foodservice | ZAGOS',
+      title: 'Ingredientes por industria | Alimentos y foodservice | ZAGOS',
       description:
-        'Soluciones de ingredientes para salsas, sazonadores, snacks, cárnicos, Foodservice, importadores, distribuidores y marcas Private Label.',
+        'Soluciones de ingredientes para salsas, sazonadores, snacks, cárnicos, foodservice, importadores, distribuidores y marcas privadas.',
     },
     breadcrumb: 'Industrias',
     hero: {
       eyebrow: 'Industrias',
       title: 'Ingredientes para *cada industria.*',
       lead: 'Adaptamos formato, presentación y especificación a la forma en que produces, abasteces o comercializas.',
-      image: { photo: 'producto/aplicacion-culinaria-zagos', alt: 'Aplicación culinaria con ingredientes deshidratados ZAGOS', label: 'Aplicaciones: salsas, sazonadores, Foodservice' },
+      image: { photo: 'producto/aplicacion-culinaria-zagos', alt: 'Aplicación culinaria con ingredientes deshidratados ZAGOS', label: 'Aplicaciones: salsas, sazonadores, foodservice' },
     },
     items: [
       {
@@ -46,13 +46,13 @@ export const industries = {
         icon: 'utensils',
         title: 'Foodservice',
         text: 'Formatos orientados a cocinas de alto volumen, cadenas, distribuidores y operadores que buscan reducir preparación y simplificar abastecimiento.',
-        cta: 'Consultar formatos Foodservice',
+        cta: 'Consultar formatos foodservice',
       },
       {
         id: 'distributors',
         icon: 'truck',
         title: 'Importadores y distribuidores',
-        text: 'Portafolio exportable, documentación técnica y opciones industriales, Foodservice y Private Label para construir una oferta diferenciada.',
+        text: 'Portafolio exportable, documentación técnica y opciones industriales, foodservice y marca privada para construir una oferta diferenciada.',
         cta: 'Cuéntanos tu mercado destino',
       },
     ],
@@ -64,16 +64,16 @@ export const industries = {
   },
   en: {
     seo: {
-      title: 'Ingredients by Industry | Food Manufacturing & Foodservice | ZAGOS',
+      title: 'Ingredients by Industry | Food Manufacturing & foodservice | ZAGOS',
       description:
-        'Ingredient solutions for sauces, seasonings, snacks, meat products, Foodservice, importers, distributors and Private Label brands.',
+        'Ingredient solutions for sauces, seasonings, snacks, meat products, foodservice, importers, distributors and private label brands.',
     },
     breadcrumb: 'Industries',
     hero: {
       eyebrow: 'Industries',
       title: 'Ingredients for *every industry.*',
       lead: 'We adapt format, packaging and specification to the way you manufacture, source or sell.',
-      image: { photo: 'producto/aplicacion-culinaria-zagos', alt: 'Culinary application with ZAGOS dehydrated ingredients', label: 'Applications: sauces, seasonings, Foodservice' },
+      image: { photo: 'producto/aplicacion-culinaria-zagos', alt: 'Culinary application with ZAGOS dehydrated ingredients', label: 'Applications: sauces, seasonings, foodservice' },
     },
     items: [
       {
@@ -109,13 +109,13 @@ export const industries = {
         icon: 'utensils',
         title: 'Foodservice',
         text: 'Formats designed for high-volume kitchens, chains, distributors and operators looking to reduce preparation and simplify sourcing.',
-        cta: 'Ask about Foodservice formats',
+        cta: 'Ask about foodservice formats',
       },
       {
         id: 'distributors',
         icon: 'truck',
         title: 'Importers & Distributors',
-        text: 'An exportable portfolio, technical documentation and industrial, Foodservice and Private Label options to build a differentiated offering.',
+        text: 'An exportable portfolio, technical documentation and industrial, foodservice and private label options to build a differentiated offering.',
         cta: 'Tell us your destination market',
       },
     ],

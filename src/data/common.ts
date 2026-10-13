@@ -35,7 +35,7 @@ export const common = {
       { key: 'home', label: 'Inicio' },
       { key: 'ingredients', label: 'Ingredientes' },
       { key: 'solutions', label: 'Soluciones' },
-      { key: 'privateLabel', label: 'Private Label' },
+      { key: 'privateLabel', label: 'Marca privada' },
       { key: 'industries', label: 'Industrias' },
       { key: 'quality', label: 'Calidad' },
       { key: 'about', label: 'Nosotros' },
@@ -48,7 +48,7 @@ export const common = {
     breadcrumbLabel: 'Ruta de navegación',
     learnMore: 'Ver más',
     footer: {
-      tagline: 'Ingredientes industriales · Foodservice · Private Label',
+      tagline: 'Ingredientes industriales · foodservice · marca privada',
       lines: 'Peppers · Vegetables · Herbs | Mash · Dehydrated · In Brine',
       colSite: 'Soluciones',
       colCompany: 'Compañía',
@@ -56,7 +56,7 @@ export const common = {
       siteLinks: [
       { key: 'ingredients', label: 'Ingredientes' },
         { key: 'solutions', label: 'Soluciones' },
-        { key: 'privateLabel', label: 'Private Label' },
+        { key: 'privateLabel', label: 'Marca privada' },
         { key: 'industries', label: 'Industrias' },
       ] as NavItem[],
       companyLinks: [
@@ -81,7 +81,7 @@ export const common = {
       { key: 'home', label: 'Home' },
       { key: 'ingredients', label: 'Ingredients' },
       { key: 'solutions', label: 'Solutions' },
-      { key: 'privateLabel', label: 'Private Label' },
+      { key: 'privateLabel', label: 'Private label' },
       { key: 'industries', label: 'Industries' },
       { key: 'quality', label: 'Quality' },
       { key: 'about', label: 'About' },
@@ -94,7 +94,7 @@ export const common = {
     breadcrumbLabel: 'Breadcrumb',
     learnMore: 'Learn more',
     footer: {
-      tagline: 'Industrial Food Ingredients · Foodservice · Private Label',
+      tagline: 'Industrial Food Ingredients · foodservice · private label',
       lines: 'Peppers · Vegetables · Herbs | Mash · Dehydrated · In Brine',
       colSite: 'Solutions',
       colCompany: 'Company',
@@ -102,7 +102,7 @@ export const common = {
       siteLinks: [
       { key: 'ingredients', label: 'Ingredients' },
         { key: 'solutions', label: 'Solutions' },
-        { key: 'privateLabel', label: 'Private Label' },
+        { key: 'privateLabel', label: 'Private label' },
         { key: 'industries', label: 'Industries' },
       ] as NavItem[],
       companyLinks: [

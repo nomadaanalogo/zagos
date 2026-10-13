@@ -17,7 +17,7 @@ const formatOptions = [
   { value: 'mash', es: 'Mash', en: 'Mash' },
   { value: 'dehydrated', es: 'Deshidratado', en: 'Dehydrated' },
   { value: 'brine', es: 'En salmuera', en: 'In Brine' },
-  { value: 'private-label', es: 'Private Label', en: 'Private Label' },
+  { value: 'private-label', es: 'Marca privada', en: 'Private label' },
   { value: 'not-sure', es: 'No estoy seguro', en: 'Not sure' },
 ];
 
@@ -26,7 +26,7 @@ const companyTypes = [
   { value: 'foodservice', es: 'Foodservice', en: 'Foodservice' },
   { value: 'distributor', es: 'Distribuidor', en: 'Distributor' },
   { value: 'importer', es: 'Importador', en: 'Importer' },
-  { value: 'private-label', es: 'Marca Private Label', en: 'Private Label brand' },
+  { value: 'private-label', es: 'Marca privada', en: 'Private label brand' },
   { value: 'other', es: 'Otro', en: 'Other' },
 ];
 
@@ -37,7 +37,7 @@ export const contact = {
     seo: {
       title: 'Contacto ZAGOS | Solicita una cotización o información técnica',
       description:
-        'Cuéntanos el ingrediente, formato, volumen y mercado destino que necesitas. Contacta a ZAGOS para proyectos industriales, Foodservice o Private Label.',
+        'Cuéntanos el ingrediente, formato, volumen y mercado destino que necesitas. Contacta a ZAGOS para proyectos industriales, foodservice o marca privada.',
     },
     breadcrumb: 'Contacto',
     hero: {
@@ -86,7 +86,7 @@ export const contact = {
     seo: {
       title: 'Contact ZAGOS | Request a Quote or Technical Information',
       description:
-        'Tell us the ingredient, format, volume and destination market you need. Contact ZAGOS for industrial, Foodservice or Private Label projects.',
+        'Tell us the ingredient, format, volume and destination market you need. Contact ZAGOS for industrial, foodservice or private label projects.',
     },
     breadcrumb: 'Contact',
     hero: {

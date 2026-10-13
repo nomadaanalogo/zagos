@@ -4,14 +4,14 @@
 export const home = {
   es: {
     seo: {
-      title: 'ZAGOS | Ingredientes industriales y Private Label desde Colombia',
+      title: 'ZAGOS | Ingredientes industriales y marca privada desde Colombia',
       description:
-        'Ajíes, vegetales y hierbas transformados en mash, deshidratados y en salmuera para fabricantes de alimentos, Foodservice, distribuidores y marcas Private Label.',
+        'Ajíes, vegetales y hierbas transformados en mash, deshidratados y en salmuera para fabricantes de alimentos, foodservice, distribuidores y marcas privadas.',
     },
     hero: {
       eyebrow: 'Mash · Deshidratados · En salmuera',
       title: 'De ingredientes latinoamericanos a *soluciones para la industria alimentaria.*',
-      lead: 'Transformamos *ajíes, vegetales y hierbas* en ingredientes industriales confiables: *mash, deshidratados y encurtidos*, con soluciones para fabricantes, Foodservice, distribución y Private Label.',
+      lead: 'Transformamos *ajíes, vegetales y hierbas* en ingredientes industriales confiables: *mash, deshidratados y encurtidos*, con soluciones para fabricantes, foodservice, distribución y marca privada.',
       ctaPrimary: 'Explorar soluciones',
       ctaSecondary: 'Solicitar cotización',
       // Slider del hero: del origen al producto (la primera es la imagen principal / LCP)
@@ -71,19 +71,19 @@ export const home = {
       cards: [
         {
           key: 'mash',
-          title: 'Mash & Pastes',
+          title: 'Pastas',
           text: 'Ingredientes procesados para integración directa en salsas, aderezos, bases y formulaciones industriales.',
           image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operario pesando ají fresco picado en la planta de ZAGOS', label: 'Mash en proceso / barril — 3:4 (vertical)' },
         },
         {
           key: 'dehydrated',
-          title: 'Dehydrated',
+          title: 'Deshidratados',
           text: 'Polvos, escamas y otras granulometrías para sazonadores, snacks, cárnicos, sopas, salsas y formulaciones secas.',
           image: { photo: 'planta/seleccion/deshidratado-cilantro-bandeja', alt: 'Cilantro deshidratado en bandeja de secado', label: 'Deshidratados: polvo, escama, entero — 3:4 (vertical)' },
         },
         {
           key: 'brine',
-          title: 'In Brine',
+          title: 'Salmuera',
           text: 'Ajíes conservados en salmuera para aplicaciones industriales que requieren identidad, textura y conservación.',
           image: { photo: 'campo/ajies-tipo-tabasco-planta', alt: 'Ajíes tipo Tabasco en la planta', label: 'Ajíes en salmuera — 3:4 (vertical)' },
         },
@@ -97,7 +97,7 @@ export const home = {
         { title: 'Industrial', text: 'Ingredientes a granel y especificaciones para fabricantes.', link: { key: 'industries' } },
         { title: 'Foodservice', text: 'Formatos prácticos para operaciones de alto volumen.', link: { key: 'industries', hash: 'foodservice' } },
         { title: 'Distribución', text: 'Soluciones listas para comercialización y abastecimiento recurrente.', link: { key: 'industries', hash: 'distributors' } },
-        { title: 'Private Label', text: 'Desarrollo, producción y adaptación de presentación bajo la marca del cliente.', link: { key: 'privateLabel' } },
+        { title: 'Marca privada', text: 'Desarrollo, producción y adaptación de presentación bajo la marca del cliente.', link: { key: 'privateLabel' } },
       ],
     },
     quality: {
@@ -116,7 +116,7 @@ export const home = {
       cta: 'Exportaciones',
     },
     privateLabel: {
-      eyebrow: 'Private Label',
+      eyebrow: 'Marca privada',
       title: 'Tu marca. Nuestra experiencia de manufactura.',
       text: 'Desarrollamos proyectos desde la definición del producto y formato hasta la producción y adaptación de empaque, incluyendo soporte técnico y documental para el mercado objetivo.',
       cta: 'Cuéntanos tu proyecto',
@@ -126,14 +126,14 @@ export const home = {
   },
   en: {
     seo: {
-      title: 'ZAGOS | Industrial Food Ingredients & Private Label from Colombia',
+      title: 'ZAGOS | Industrial Food Ingredients & private label from Colombia',
       description:
-        'Peppers, vegetables and herbs transformed into mash, dehydrated and In Brine ingredients for food manufacturers, Foodservice, distributors and Private Label brands.',
+        'Peppers, vegetables and herbs transformed into mash, dehydrated and In Brine ingredients for food manufacturers, foodservice, distributors and private label brands.',
     },
     hero: {
       eyebrow: 'Mash · Dehydrated · In Brine',
       title: 'From Latin American ingredients to *food industry solutions.*',
-      lead: 'We transform *peppers, vegetables and herbs* into reliable industrial ingredients: *mash, dehydrated and In Brine* products for food manufacturers, Foodservice, distributors and Private Label brands.',
+      lead: 'We transform *peppers, vegetables and herbs* into reliable industrial ingredients: *mash, dehydrated and In Brine* products for food manufacturers, foodservice, distributors and private label brands.',
       ctaPrimary: 'Explore solutions',
       ctaSecondary: 'Request a quote',
       slides: [
@@ -218,7 +218,7 @@ export const home = {
         { title: 'Industrial', text: 'Bulk ingredients and specifications for manufacturers.', link: { key: 'industries' } },
         { title: 'Foodservice', text: 'Practical formats for high-volume operations.', link: { key: 'industries', hash: 'foodservice' } },
         { title: 'Distribution', text: 'Ready-to-market solutions and recurring supply.', link: { key: 'industries', hash: 'distributors' } },
-        { title: 'Private Label', text: "Development, production and packaging adaptation under the customer's brand.", link: { key: 'privateLabel' } },
+        { title: 'Private label', text: "Development, production and packaging adaptation under the customer's brand.", link: { key: 'privateLabel' } },
       ],
     },
     quality: {
@@ -237,7 +237,7 @@ export const home = {
       cta: 'Export',
     },
     privateLabel: {
-      eyebrow: 'Private Label',
+      eyebrow: 'Private label',
       title: 'Your brand. Our manufacturing expertise.',
       text: 'We support projects from product and format definition through production and packaging adaptation, including technical and documentation support for the target market.',
       cta: 'Tell us about your project',

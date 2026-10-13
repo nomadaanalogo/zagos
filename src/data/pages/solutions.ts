@@ -9,7 +9,7 @@ export const solutions = {
     hero: {
       eyebrow: 'Mash · Deshidratados · En salmuera',
       title: 'El formato correcto *para tu proceso.*',
-      lead: 'Una misma materia prima puede resolver necesidades diferentes dependiendo de cómo se transforma. Diseñamos nuestras soluciones para integrarse a procesos industriales, Foodservice, distribución y proyectos de marca privada.',
+      lead: 'Una misma materia prima puede resolver necesidades diferentes dependiendo de cómo se transforma. Diseñamos nuestras soluciones para integrarse a procesos industriales, foodservice, distribución y proyectos de marca privada.',
       image: { photo: 'producto/bodegon-deshidratados-zagos', alt: 'Ingredientes deshidratados ZAGOS en polvo y escama', label: 'Bodegón de deshidratados' },
     },
     labels: {
@@ -29,8 +29,8 @@ export const solutions = {
         text: 'Soluciones húmedas procesadas para reducir preparación, facilitar dosificación y ofrecer una base consistente para salsas, aderezos, marinados, condimentos y otros desarrollos.',
         specs: [
           ['rawMaterials', 'Jolokia, Habanero, Jalapeño, Cayenne, ajíes tipo Caribbean/Tabasco, cebolla junca (scallions) y otros desarrollos.'],
-          ['formats', 'Industrial bulk, Foodservice y formatos menores según referencia o proyecto.'],
-          ['packaging', ['Barril industrial de 220 L', 'Bolsa Foodservice de 3 kg', 'Galón de 3.8 kg', 'Doypacks y otros formatos del portafolio ZAGOS']],
+          ['formats', 'Industrial bulk, foodservice y formatos menores según referencia o proyecto.'],
+          ['packaging', ['Barril industrial de 220 L', 'Bolsa foodservice de 3 kg', 'Galón de 3.8 kg', 'Doypacks y otros formatos del portafolio ZAGOS']],
         ],
         cta: 'Solicitar ficha técnica de Mash',
         image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operario pesando ají fresco picado en la planta de ZAGOS', label: 'Mash en proceso / barril 220 L — 4:3' },
@@ -44,7 +44,7 @@ export const solutions = {
           ['formats', ['Entero (whole)', 'Escama (flakes)', 'Polvo (powder)', 'Según referencia']],
           ['rawMaterials', 'Ajíes, cebolla junca, cebolla, cilantro, perejil, pimentón rojo, ajo y referencias desarrolladas.'],
           ['applications', 'Mezclas sazonadoras, snacks, cárnicos, sopas, salsas, mezclas secas y formulaciones industriales.'],
-          ['packaging', 'Empaque industrial y Foodservice según referencia y especificación.'],
+          ['packaging', 'Empaque industrial y foodservice según referencia y especificación.'],
         ],
         cta: 'Explorar deshidratados',
         image: { photo: 'planta/seleccion/deshidratado-cebolla-bandeja', alt: 'Cebolla deshidratada en bandeja de secado', label: 'Deshidratados: polvo, escama, entero — 4:3' },
@@ -79,7 +79,7 @@ export const solutions = {
     hero: {
       eyebrow: 'Mash · Dehydrated · In Brine',
       title: 'The right format *for your process.*',
-      lead: 'The same raw material can solve different needs depending on how it is processed. We design our solutions to integrate into industrial processes, Foodservice, distribution and private label projects.',
+      lead: 'The same raw material can solve different needs depending on how it is processed. We design our solutions to integrate into industrial processes, foodservice, distribution and private label projects.',
       image: { photo: 'producto/bodegon-deshidratados-zagos', alt: 'ZAGOS dehydrated ingredients as powder and flakes', label: 'Dehydrated still life' },
     },
     labels: {
@@ -99,8 +99,8 @@ export const solutions = {
         text: 'Processed wet ingredients designed to reduce preparation, simplify dosing and provide a consistent base for sauces, dressings, marinades and other formulations.',
         specs: [
           ['rawMaterials', 'Jolokia, Habanero, Jalapeño, Cayenne, Caribbean/Tabasco-type peppers, scallions and other developments.'],
-          ['formats', 'Industrial bulk, Foodservice and smaller formats by reference or project.'],
-          ['packaging', ['220 L industrial drum', '3 kg Foodservice bag', '3.8 kg gallon', 'Doypacks and other ZAGOS portfolio formats']],
+          ['formats', 'Industrial bulk, foodservice and smaller formats by reference or project.'],
+          ['packaging', ['220 L industrial drum', '3 kg foodservice bag', '3.8 kg gallon', 'Doypacks and other ZAGOS portfolio formats']],
         ],
         cta: 'Request Mash technical data',
         image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operator weighing chopped fresh peppers at the ZAGOS facility', label: 'Mash in process / 220 L drum — 4:3' },
@@ -114,7 +114,7 @@ export const solutions = {
           ['formats', ['Whole', 'Flakes', 'Powder', 'By reference']],
           ['rawMaterials', 'Peppers, scallions, onion, cilantro, parsley, red bell pepper, garlic and developed references.'],
           ['applications', 'Seasoning blends, snacks, meat products, soups, sauces, dry mixes and industrial formulations.'],
-          ['packaging', 'Industrial and Foodservice packaging by reference and specification.'],
+          ['packaging', 'Industrial and foodservice packaging by reference and specification.'],
         ],
         cta: 'Explore dehydrated ingredients',
         image: { photo: 'planta/seleccion/deshidratado-cebolla-bandeja', alt: 'Dehydrated onion on a drying tray', label: 'Dehydrated: powder, flakes, whole — 4:3' },
