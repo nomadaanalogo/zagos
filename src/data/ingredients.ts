@@ -51,7 +51,7 @@ export const ingredients: Ingredient[] = [
     category: 'peppers',
     name: { es: 'Habanero', en: 'Habanero' },
     summary: {
-      es: 'Perfiles de alto picor para mash, deshidratados y desarrollos industriales.',
+      es: 'Perfiles de alto picor para pasta, deshidratados y desarrollos industriales.',
       en: 'High-heat profiles for mash, dehydrated and industrial developments.',
     },
     formats: ['mash', 'dehydrated'],
@@ -60,15 +60,15 @@ export const ingredients: Ingredient[] = [
       photo: 'campo/aji-rojo-planta',
       seo: {
         title: {
-          es: 'Habanero en mash y deshidratado para la industria | ZAGOS',
+          es: 'Habanero en pasta y deshidratado para la industria | ZAGOS',
           en: 'Habanero Mash & Dehydrated Habanero Supplier | ZAGOS',
         },
         description: {
-          es: 'Mash de habanero y habanero deshidratado desde Colombia para salsas, sazonadores, snacks y marca privada. Solicita la especificación a ZAGOS.',
+          es: 'Pasta de habanero y habanero deshidratado desde Colombia para salsas, sazonadores, snacks y marca privada. Solicita la especificación a ZAGOS.',
           en: 'Bulk habanero mash and dehydrated habanero from Colombia for sauces, seasonings, snacks and private label. Request specifications from ZAGOS.',
         },
       },
-      h1: { es: 'Habanero en mash y deshidratado', en: 'Habanero mash and dehydrated habanero' },
+      h1: { es: 'Habanero en pasta y deshidratado', en: 'Habanero mash and dehydrated habanero' },
       applications: {
         es: 'Salsas, salsas picantes, aderezos, sazonadores, snacks y formulaciones industriales.',
         en: 'Sauces, hot sauces, dressings, seasonings, snacks and industrial formulations.',
@@ -89,15 +89,15 @@ export const ingredients: Ingredient[] = [
       photo: 'campo/cosecha-aji-campo',
       seo: {
         title: {
-          es: 'Jalapeño en mash y deshidratado para la industria | ZAGOS',
+          es: 'Jalapeño en pasta y deshidratado para la industria | ZAGOS',
           en: 'Jalapeño Mash & Dehydrated Jalapeño Supplier | ZAGOS',
         },
         description: {
-          es: 'Mash de jalapeño y jalapeño deshidratado para salsas, dips, marinados, foodservice y marca privada. Abastecimiento industrial desde Colombia.',
+          es: 'Pasta de jalapeño y jalapeño deshidratado para salsas, dips, marinados, foodservice y marca privada. Abastecimiento industrial desde Colombia.',
           en: 'Jalapeño mash and dehydrated jalapeño for sauces, dips, marinades, foodservice and private label. Industrial supply from Colombia by ZAGOS.',
         },
       },
-      h1: { es: 'Jalapeño en mash y deshidratado', en: 'Jalapeño mash and dehydrated jalapeño' },
+      h1: { es: 'Jalapeño en pasta y deshidratado', en: 'Jalapeño mash and dehydrated jalapeño' },
       applications: {
         es: 'Salsas, dips, marinados, foodservice y marca privada.',
         en: 'Sauces, dips, marinades, foodservice and private label.',
@@ -119,15 +119,15 @@ export const ingredients: Ingredient[] = [
       photo: 'producto/aji-cayena-polvo-escama',
       seo: {
         title: {
-          es: 'Cayenne en mash y deshidratado para la industria | ZAGOS',
+          es: 'Cayenne en pasta y deshidratado para la industria | ZAGOS',
           en: 'Cayenne Pepper Mash & Dehydrated Cayenne | ZAGOS',
         },
         description: {
-          es: 'Mash de ají cayenne y cayenne deshidratado para salsas picantes, sistemas de sazonado y formulaciones industriales. Desde Colombia.',
+          es: 'Pasta de ají cayenne y cayenne deshidratado para salsas picantes, sistemas de sazonado y formulaciones industriales. Desde Colombia.',
           en: 'Cayenne pepper mash and dehydrated cayenne for hot sauces, seasoning systems and industrial formulations. Supplied from Colombia by ZAGOS.',
         },
       },
-      h1: { es: 'Cayenne en mash y deshidratado', en: 'Cayenne pepper mash and dehydrated cayenne' },
+      h1: { es: 'Cayenne en pasta y deshidratado', en: 'Cayenne pepper mash and dehydrated cayenne' },
       applications: {
         es: 'Salsas picantes, sistemas de sazonado y formulaciones industriales.',
         en: 'Hot sauces, seasoning systems and industrial formulations.',
@@ -139,7 +139,7 @@ export const ingredients: Ingredient[] = [
     category: 'peppers',
     name: { es: 'Ajíes tipo Tabasco / Caribbean', en: 'Tabasco-type / Caribbean peppers' },
     summary: {
-      es: 'Aplicaciones en mash, salmuera y formulaciones para salsas.',
+      es: 'Aplicaciones en pasta, salmuera y formulaciones para salsas.',
       en: 'Applications in mash, brine and sauce formulations.',
     },
     formats: ['mash', 'brine', 'dehydrated'],
@@ -148,16 +148,16 @@ export const ingredients: Ingredient[] = [
       photo: 'campo/ajies-tipo-tabasco-planta',
       seo: {
         title: {
-          es: 'Ají tipo Tabasco en mash y en salmuera | ZAGOS',
+          es: 'Ají tipo Tabasco en pasta y en salmuera | ZAGOS',
           en: 'Tabasco-Type Pepper Mash & Peppers in Brine | ZAGOS',
         },
         description: {
-          es: 'Mash de ají tipo Tabasco y Caribbean, ajíes en salmuera y deshidratados para salsas y bases industriales. Abastecimiento a granel desde Colombia.',
+          es: 'Pasta de ají tipo Tabasco y Caribbean, ajíes en salmuera y deshidratados para salsas y bases industriales. Abastecimiento a granel desde Colombia.',
           en: 'Tabasco-type and Caribbean pepper mash, peppers in brine and dehydrated formats for sauces and industrial pepper bases. Bulk supply from Colombia.',
         },
       },
       h1: {
-        es: 'Ajíes tipo Tabasco y Caribbean en mash y en salmuera',
+        es: 'Ajíes tipo Tabasco y Caribbean en pasta y en salmuera',
         en: 'Tabasco-type and Caribbean pepper mash and peppers in brine',
       },
       applications: {
@@ -185,7 +185,7 @@ export const ingredients: Ingredient[] = [
     name: { es: 'Cebolla junca', en: 'Scallions' },
     altName: { es: 'Scallions', en: 'Cebolla junca' },
     summary: {
-      es: 'Especialmente relevante para mash y deshidratados.',
+      es: 'Especialmente relevante para pasta y deshidratados.',
       en: 'Especially relevant for mash and dehydrated formats.',
     },
     formats: ['mash', 'dehydrated'],
@@ -193,15 +193,15 @@ export const ingredients: Ingredient[] = [
       photo: 'producto/cebolla-junca-deshidratada',
       seo: {
         title: {
-          es: 'Cebolla junca (scallions) en mash y deshidratada | ZAGOS',
+          es: 'Cebolla junca (scallions) en pasta y deshidratada | ZAGOS',
           en: 'Dehydrated Scallions & Scallion Mash Supplier | ZAGOS',
         },
         description: {
-          es: 'Mash de cebolla junca (scallions) y cebolla junca deshidratada para salsas, bases, sopas, sazonadores y foodservice. Desde Colombia.',
+          es: 'Pasta de cebolla junca (scallions) y cebolla junca deshidratada para salsas, bases, sopas, sazonadores y foodservice. Desde Colombia.',
           en: 'Scallion mash and dehydrated scallions for sauces, bases, soups, seasoning systems and foodservice. Industrial supply from Colombia by ZAGOS.',
         },
       },
-      h1: { es: 'Cebolla junca (scallions) en mash y deshidratada', en: 'Scallion mash and dehydrated scallions' },
+      h1: { es: 'Cebolla junca (scallions) en pasta y deshidratada', en: 'Scallion mash and dehydrated scallions' },
       applications: {
         es: 'Salsas, bases, sopas, sistemas de sazonado y foodservice.',
         en: 'Sauces, bases, soups, seasoning systems and foodservice.',
@@ -294,7 +294,7 @@ export const ingredients: Ingredient[] = [
     category: 'herbs',
     name: { es: 'Perejil', en: 'Parsley' },
     summary: {
-      es: 'Mash, deshidratado y mezclas.',
+      es: 'Pasta, deshidratado y mezclas.',
       en: 'Mash, dehydrated and blends.',
     },
     formats: ['mash', 'dehydrated'],

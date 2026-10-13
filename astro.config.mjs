@@ -6,11 +6,15 @@ import sitemap from '@astrojs/sitemap';
 const SITE = 'https://www.zagos.com';
 
 // Páginas con noindex: fuera del sitemap
-const EXCLUDE = ['/politica-de-datos/', '/en/privacy-policy/', '/404'];
+const EXCLUDE = ['/politica-de-datos/', '/en/privacy-policy/', '/404', '/private-label/'];
 
 export default defineConfig({
   site: SITE,
   trailingSlash: 'always',
+  // URL anterior de la página de marca privada en español
+  redirects: {
+    '/private-label/': '/marca-privada/',
+  },
   i18n: {
     defaultLocale: 'es',
     locales: ['es', 'en'],

@@ -62,7 +62,7 @@ export const privateLabel = {
   },
   en: {
     seo: {
-      title: 'Private label Food Manufacturing | ZAGOS Colombia',
+      title: 'Private label food manufacturing | ZAGOS Colombia',
       description:
         'Develop pepper, vegetable and herb-based products under your brand with formulation support, scalable manufacturing and packaging options.',
     },

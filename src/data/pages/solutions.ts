@@ -1,13 +1,13 @@
 export const solutions = {
   es: {
     seo: {
-      title: 'Soluciones | Mash, deshidratados y en salmuera | ZAGOS',
+      title: 'Soluciones | Pasta, deshidratados y salmuera | ZAGOS',
       description:
-        'Mash industrial, ingredientes deshidratados y ajíes en salmuera elaborados con ajíes, vegetales y hierbas latinoamericanos.',
+        'Pasta industrial, ingredientes deshidratados y ajíes en salmuera elaborados con ajíes, vegetales y hierbas latinoamericanos.',
     },
     breadcrumb: 'Soluciones',
     hero: {
-      eyebrow: 'Mash · Deshidratados · En salmuera',
+      eyebrow: 'Pasta · Deshidratados · Salmuera',
       title: 'El formato correcto *para tu proceso.*',
       lead: 'Una misma materia prima puede resolver necesidades diferentes dependiendo de cómo se transforma. Diseñamos nuestras soluciones para integrarse a procesos industriales, foodservice, distribución y proyectos de marca privada.',
       image: { photo: 'producto/bodegon-deshidratados-zagos', alt: 'Ingredientes deshidratados ZAGOS en polvo y escama', label: 'Bodegón de deshidratados' },
@@ -25,15 +25,15 @@ export const solutions = {
       {
         key: 'mash',
         eyebrow: '01',
-        title: 'Mash',
+        title: 'Pasta',
         text: 'Soluciones húmedas procesadas para reducir preparación, facilitar dosificación y ofrecer una base consistente para salsas, aderezos, marinados, condimentos y otros desarrollos.',
         specs: [
           ['rawMaterials', 'Jolokia, Habanero, Jalapeño, Cayenne, ajíes tipo Caribbean/Tabasco, cebolla junca (scallions) y otros desarrollos.'],
           ['formats', 'Industrial bulk, foodservice y formatos menores según referencia o proyecto.'],
           ['packaging', ['Barril industrial de 220 L', 'Bolsa foodservice de 3 kg', 'Galón de 3.8 kg', 'Doypacks y otros formatos del portafolio ZAGOS']],
         ],
-        cta: 'Solicitar ficha técnica de Mash',
-        image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operario pesando ají fresco picado en la planta de ZAGOS', label: 'Mash en proceso / barril 220 L — 4:3' },
+        cta: 'Solicitar ficha técnica de pasta',
+        image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operario pesando ají fresco picado en la planta de ZAGOS', label: 'Pasta en proceso / barril 220 L — 4:3' },
       },
       {
         key: 'dehydrated',
@@ -52,7 +52,7 @@ export const solutions = {
       {
         key: 'brine',
         eyebrow: '03',
-        title: 'En salmuera',
+        title: 'Salmuera',
         text: 'Ajíes procesados y conservados en salmuera para clientes que requieren una solución estable, funcional y lista para integrarse en procesos industriales.',
         specs: [
           ['references', 'Ajíes tipo Tabasco y desarrollos según especificación.'],
@@ -65,7 +65,7 @@ export const solutions = {
     ],
     cta: {
       title: '¿No sabes qué formato necesitas?',
-      text: 'Cuéntanos tu aplicación y proceso. Te ayudamos a elegir entre mash, deshidratado o en salmuera.',
+      text: 'Cuéntanos tu aplicación y proceso. Te ayudamos a elegir entre pasta, deshidratado o en salmuera.',
       button: 'Hablar con nuestro equipo',
     },
   },

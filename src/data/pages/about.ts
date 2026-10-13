@@ -9,7 +9,7 @@ export const about = {
     hero: {
       eyebrow: 'Sobre ZAGOS',
       title: 'Transformamos ingredientes. *Construimos soluciones.*',
-      lead: 'ZAGOS es una empresa agroindustrial colombiana especializada en la transformación de ajíes, vegetales y hierbas para la industria alimentaria. Desde nuestra operación en Palmira, Valle del Cauca, desarrollamos y fabricamos soluciones en mash/pastas, deshidratados y encurtidos para clientes industriales, foodservice, distribución y marca privada.',
+      lead: 'ZAGOS es una empresa agroindustrial colombiana especializada en la transformación de ajíes, vegetales y hierbas para la industria alimentaria. Desde nuestra operación en Palmira, Valle del Cauca, desarrollamos y fabricamos soluciones en pasta, deshidratados y salmuera para clientes industriales, foodservice, distribución y marca privada.',
       image: { photo: 'planta/equipo-zagos-planta', alt: 'Equipo de ZAGOS en la planta de Palmira', label: 'Equipo humano en operación — 4:3' },
     },
     values: {

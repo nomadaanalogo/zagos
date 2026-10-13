@@ -8,7 +8,7 @@ export const routes = {
   home: { es: '/', en: '/en/' },
   ingredients: { es: '/ingredientes/', en: '/en/ingredients/' },
   solutions: { es: '/soluciones/', en: '/en/solutions/' },
-  privateLabel: { es: '/private-label/', en: '/en/private-label/' },
+  privateLabel: { es: '/marca-privada/', en: '/en/private-label/' },
   industries: { es: '/industrias/', en: '/en/industries/' },
   quality: { es: '/calidad-inocuidad/', en: '/en/food-safety-quality/' },
   about: { es: '/nosotros/', en: '/en/about/' },

@@ -14,9 +14,9 @@ const ingredientOptions = [
 ];
 
 const formatOptions = [
-  { value: 'mash', es: 'Mash', en: 'Mash' },
+  { value: 'mash', es: 'Pasta', en: 'Mash' },
   { value: 'dehydrated', es: 'Deshidratado', en: 'Dehydrated' },
-  { value: 'brine', es: 'En salmuera', en: 'In Brine' },
+  { value: 'brine', es: 'Salmuera', en: 'In Brine' },
   { value: 'private-label', es: 'Marca privada', en: 'Private label' },
   { value: 'not-sure', es: 'No estoy seguro', en: 'Not sure' },
 ];

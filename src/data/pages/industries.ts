@@ -17,7 +17,7 @@ export const industries = {
         id: 'sauces',
         icon: 'droplet',
         title: 'Salsas y aderezos',
-        text: 'Mash de ajíes, cebolla junca y otros vegetales; deshidratados y soluciones a la medida para controlar preparación, sabor, picor y consistencia.',
+        text: 'Pasta de ajíes, cebolla junca y otros vegetales; deshidratados y soluciones a la medida para controlar preparación, sabor, picor y consistencia.',
         cta: 'Cuéntanos qué salsa estás formulando',
       },
       {

@@ -18,9 +18,9 @@ export const company = {
 export type FormatKey = 'mash' | 'dehydrated' | 'brine';
 
 export const formats: Record<FormatKey, { name: L; anchor: string; icon: string }> = {
-  mash: { name: { es: 'Mash', en: 'Mash' }, anchor: 'mash', icon: 'droplet' },
+  mash: { name: { es: 'Pasta', en: 'Mash' }, anchor: 'mash', icon: 'droplet' },
   dehydrated: { name: { es: 'Deshidratado', en: 'Dehydrated' }, anchor: 'dehydrated', icon: 'sun' },
-  brine: { name: { es: 'En salmuera', en: 'In Brine' }, anchor: 'in-brine', icon: 'jar' },
+  brine: { name: { es: 'Salmuera', en: 'In Brine' }, anchor: 'in-brine', icon: 'jar' },
 };
 
 type NavItem = { key: RouteKey; label: string };
@@ -49,7 +49,7 @@ export const common = {
     learnMore: 'Ver más',
     footer: {
       tagline: 'Ingredientes industriales · foodservice · marca privada',
-      lines: 'Peppers · Vegetables · Herbs | Mash · Dehydrated · In Brine',
+      lines: 'Ajíes · Vegetales · Hierbas | Pasta · Deshidratados · Salmuera',
       colSite: 'Soluciones',
       colCompany: 'Compañía',
       colLegal: 'Legal',

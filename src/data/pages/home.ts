@@ -6,12 +6,12 @@ export const home = {
     seo: {
       title: 'ZAGOS | Ingredientes industriales y marca privada desde Colombia',
       description:
-        'Ajíes, vegetales y hierbas transformados en mash, deshidratados y en salmuera para fabricantes de alimentos, foodservice, distribuidores y marcas privadas.',
+        'Ajíes, vegetales y hierbas transformados en pasta, deshidratados y salmuera para fabricantes de alimentos, foodservice, distribuidores y marcas privadas.',
     },
     hero: {
-      eyebrow: 'Mash · Deshidratados · En salmuera',
+      eyebrow: 'Pasta · Deshidratados · Salmuera',
       title: 'De ingredientes latinoamericanos a *soluciones para la industria alimentaria.*',
-      lead: 'Transformamos *ajíes, vegetales y hierbas* en ingredientes industriales confiables: *mash, deshidratados y encurtidos*, con soluciones para fabricantes, foodservice, distribución y marca privada.',
+      lead: 'Transformamos *ajíes, vegetales y hierbas* en ingredientes industriales confiables: *pasta, deshidratados y salmuera*, con soluciones para fabricantes, foodservice, distribución y marca privada.',
       ctaPrimary: 'Explorar soluciones',
       ctaSecondary: 'Solicitar cotización',
       // Slider del hero: del origen al producto (la primera es la imagen principal / LCP)
@@ -73,7 +73,7 @@ export const home = {
           key: 'mash',
           title: 'Pastas',
           text: 'Ingredientes procesados para integración directa en salsas, aderezos, bases y formulaciones industriales.',
-          image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operario pesando ají fresco picado en la planta de ZAGOS', label: 'Mash en proceso / barril — 3:4 (vertical)' },
+          image: { photo: 'planta/seleccion/pesaje-aji-proceso', alt: 'Operario pesando ají fresco picado en la planta de ZAGOS', label: 'Pasta en proceso / barril — 3:4 (vertical)' },
         },
         {
           key: 'dehydrated',

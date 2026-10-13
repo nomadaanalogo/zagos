@@ -1,0 +1,3 @@
+# Redirecciones permanentes (Cloudflare Pages)
+/private-label/  /marca-privada/  301
+/private-label   /marca-privada/  301
