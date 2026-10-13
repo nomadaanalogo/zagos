@@ -1,0 +1,30 @@
+---
+/** Rejilla responsive: 1 columna en móvil → `cols` en escritorio. */
+interface Props {
+  cols?: 2 | 3 | 4;
+  as?: 'div' | 'ul';
+  class?: string;
+}
+const { cols = 3, as: Tag = 'div', class: className } = Astro.props;
+---
+
+<Tag class:list={['grid', `grid--${cols}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .grid {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 1.5vw, 3rem) clamp(1.5rem, 1rem + 2vw, 3rem);
+    grid-template-columns: minmax(0, 1fr);
+    list-style: none;
+    padding: 0;
+  }
+  @media (min-width: 40rem) {
+    .grid--2, .grid--3, .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>

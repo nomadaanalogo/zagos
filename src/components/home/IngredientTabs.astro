@@ -1,0 +1,255 @@
+---
+/**
+ * Materias primas en pestañas (Ajíes / Vegetales / Hierbas).
+ * Patrón ARIA tabs con teclado (← → Inicio Fin). Sin JS se muestran todos los paneles.
+ */
+import Photo from '../ui/Photo.astro';
+import Icon from '../ui/Icon.astro';
+import { ingredients } from '../../data/ingredients';
+import { formats } from '../../data/common';
+import type { Lang } from '../../i18n/config';
+import { ingredientHref, href } from '../../i18n/routes';
+
+interface Item { label: string; id: string }
+interface Group { title: string; icon: string; items: Item[]; note?: string; image: { alt: string; label: string; photo?: string; focus?: string } }
+interface Props {
+  lang: Lang;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  groups: Group[];
+  cta: string;
+}
+
+const { lang, eyebrow, title, lead, groups, cta } = Astro.props;
+const byId = new Map(ingredients.map((i) => [i.id, i]));
+---
+
+<section class="ing-tabs" aria-labelledby="ing-tabs-title">
+  <div class="container">
+    <header class="ing-tabs__head">
+      <div data-reveal>
+        <p class="kicker">{eyebrow}</p>
+        <h2 id="ing-tabs-title" class="display">{title}</h2>
+      </div>
+      <p class="lead" data-reveal style="--i:1">{lead}</p>
+    </header>
+
+    <div class="tabs" data-tabs>
+      <div class="tabs__list" role="tablist" aria-label={title} data-reveal>
+        {groups.map((g, i) => (
+          <button
+            class="tabs__tab"
+            type="button"
+            role="tab"
+            id={`ing-tab-${i}`}
+            aria-controls={`ing-panel-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            <Icon name={g.icon} size={20} />
+            <span>{g.title}</span>
+            <span class="tabs__count">{g.items.length}</span>
+          </button>
+        ))}
+      </div>
+
+      {groups.map((g, i) => (
+        <div
+          class="tabs__panel"
+          role="tabpanel"
+          id={`ing-panel-${i}`}
+          aria-labelledby={`ing-tab-${i}`}
+          tabindex="0"
+          hidden={i !== 0}
+        >
+          <div class="tabs__media">
+            <Photo photo={g.image.photo} focus={g.image.focus} alt={g.image.alt} label={g.image.label} ratio="4/5" />
+          </div>
+          <div class="tabs__content">
+            <h3 class="tabs__title">{g.title}</h3>
+            <ul class="ing-list">
+              {g.items.map((it) => {
+                const ing = byId.get(it.id);
+                const link = ing?.page ? ingredientHref(it.id, lang) : undefined;
+                const fmts = ing?.formats.map((f) => formats[f].name[lang]) ?? [];
+                const Tag = link ? 'a' : 'div';
+                return (
+                  <li>
+                    <Tag class:list={['ing-list__row', { 'is-link': link }]} href={link}>
+                      <span class="ing-list__name">{it.label}</span>
+                      {fmts.length > 0 && <span class="ing-list__formats">{fmts.join(' · ')}</span>}
+                      {link && <span class="ing-list__arrow"><Icon name="arrow" size={18} /></span>}
+                    </Tag>
+                  </li>
+                );
+              })}
+            </ul>
+            {g.note && <p class="tabs__note">{g.note}</p>}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="ing-tabs__cta">
+      <a class="btn btn--ghost" href={href('ingredients', lang)}>
+        {cta} <Icon name="arrow" size={18} />
+      </a>
+    </p>
+  </div>
+</section>
+
+<noscript><style>.tabs__panel[hidden] { display: grid !important; } .tabs__list { display: none !important; }</style></noscript>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (idx: number, focus = false) => {
+      tabs.forEach((t, i) => {
+        const on = i === idx;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls')!)!;
+        panel.hidden = !on;
+        if (on) panel.classList.remove('is-entering'), void panel.offsetWidth, panel.classList.add('is-entering');
+      });
+      if (focus) tabs[idx].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const map: Record<string, number> = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (e.key in map) {
+          e.preventDefault();
+          select((map[e.key] + tabs.length) % tabs.length, true);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .ing-tabs { padding-block: var(--space-section); }
+  .ing-tabs__head {
+    display: grid;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    align-items: end;
+  }
+  @media (min-width: 60rem) {
+    .ing-tabs__head { grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+  }
+
+  /* Pestañas */
+  .tabs__list {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: var(--space-lg);
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+  .tabs__list::-webkit-scrollbar { display: none; }
+  .tabs__tab {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 52px;
+    padding: 0.75rem 1.25rem;
+    border: 1.5px solid var(--c-border);
+    border-radius: 999px;
+    background: var(--c-bg);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--c-text);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .tabs__tab:hover { border-color: var(--c-brand); }
+  .tabs__tab[aria-selected='true'] { background: var(--c-brand); border-color: var(--c-brand); color: var(--c-on-brand); }
+  .tabs__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding-inline: 0.375rem;
+    border-radius: 999px;
+    background: var(--c-surface-2);
+    color: var(--c-brand);
+    font-size: var(--fs-xs);
+  }
+  .tabs__tab[aria-selected='true'] .tabs__count { background: rgb(255 255 255 / 0.18); color: #fff; }
+
+  /* Panel */
+  .tabs__panel {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+  .tabs__panel[hidden] { display: none; }
+  .tabs__panel:focus-visible { outline-offset: 8px; }
+  .tabs__panel.is-entering { animation: panel-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(10px); } }
+  .tabs__media { max-width: 34rem; }
+  .tabs__title { font-size: var(--fs-h2); margin-bottom: var(--space-md); }
+
+  .ing-list { list-style: none; padding: 0; border-top: 1px solid var(--c-border); }
+  .ing-list li { border-bottom: 1px solid var(--c-border); }
+  .ing-list__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.25rem 1rem;
+    padding: 1.125rem 0.25rem;
+    color: var(--c-text);
+    text-decoration: none;
+  }
+  .ing-list__name {
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .ing-list__formats {
+    grid-row: 2;
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+  }
+  .ing-list__arrow {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--c-border);
+    color: var(--c-brand);
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .ing-list__row.is-link:hover { color: var(--c-brand); }
+  .ing-list__row.is-link:hover .ing-list__arrow {
+    background: var(--c-brand);
+    border-color: var(--c-brand);
+    color: #fff;
+    transform: translateX(4px);
+  }
+  .tabs__note {
+    margin-top: var(--space-md);
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+  }
+  .ing-tabs__cta { margin-top: var(--space-xl); }
+
+  @media (min-width: 60rem) {
+    .tabs__panel { grid-template-columns: 5fr 6fr; gap: clamp(3rem, 6vw, 6rem); }
+    .tabs__media { max-width: none; }
+  }
+  @media (max-width: 59.99rem) {
+    .tabs__media { order: 2; }
+    .tabs__media :global(.img-ph),
+    .tabs__media :global(.photo-frame) { aspect-ratio: 16 / 10 !important; }
+  }
+</style>

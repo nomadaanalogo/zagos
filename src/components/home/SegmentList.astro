@@ -1,0 +1,103 @@
+---
+/** Modelos de negocio como lista editorial: cada fila lleva al contenido de ese perfil. */
+import Icon from '../ui/Icon.astro';
+import type { Lang } from '../../i18n/config';
+import { href, type RouteKey } from '../../i18n/routes';
+
+interface Card { title: string; text: string; link: { key: string; hash?: string } }
+interface Props { lang: Lang; eyebrow: string; title: string; cards: Card[] }
+const { lang, eyebrow, title, cards } = Astro.props;
+---
+
+<section class="seg" aria-labelledby="seg-title">
+  <div class="container seg__grid">
+    <header class="seg__head" data-reveal>
+      <p class="kicker">{eyebrow}</p>
+      <h2 id="seg-title" class="display">{title}</h2>
+    </header>
+
+    <ol class="seg__list">
+      {cards.map((c, i) => (
+        <li data-reveal style={`--i:${i}`}>
+          <a class="seg__row" href={href(c.link.key as RouteKey, lang, c.link.hash)}>
+            <span class="seg__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="seg__body">
+              <span class="seg__title">{c.title}</span>
+              <span class="seg__text">{c.text}</span>
+            </span>
+            <span class="seg__arrow" aria-hidden="true"><Icon name="arrow" size={20} /></span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .seg { padding-block: var(--space-section); }
+  .seg__grid { display: grid; gap: var(--space-xl); }
+  @media (min-width: 60rem) {
+    .seg__grid { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+    .seg__head { position: sticky; top: calc(var(--header-h) + 2rem); }
+  }
+
+  .seg__list { list-style: none; padding: 0; border-top: 1px solid var(--c-border); }
+  .seg__list li { border-bottom: 1px solid var(--c-border); }
+  .seg__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: clamp(1rem, 0.5rem + 2vw, 2rem);
+    padding: clamp(1.25rem, 1rem + 1.2vw, 2rem) clamp(0.25rem, 1vw, 1rem);
+    color: var(--c-text);
+    text-decoration: none;
+    transition: background-color 0.25s;
+  }
+  .seg__row::before {
+    /* Barra de acento que crece al pasar el mouse */
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 0;
+    height: 3px;
+    background: var(--c-accent);
+    transition: width 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .seg__num {
+    align-self: start;
+    padding-top: 0.35em;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--c-accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .seg__body { display: grid; gap: 0.375rem; }
+  .seg__title {
+    font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .seg__text { color: var(--c-text-muted); max-width: 34rem; }
+  .seg__arrow {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--c-border);
+    color: var(--c-brand);
+    transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
+  }
+  .seg__row:hover { background: var(--c-surface); }
+  .seg__row:hover::before { width: 100%; }
+  .seg__row:hover .seg__title { color: var(--c-brand); }
+  .seg__row:hover .seg__arrow {
+    background: var(--c-brand);
+    border-color: var(--c-brand);
+    color: #fff;
+    transform: translateX(4px);
+  }
+</style>

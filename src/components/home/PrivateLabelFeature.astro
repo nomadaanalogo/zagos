@@ -1,0 +1,66 @@
+---
+/** Private Label: bloque de marca con foto que sangra hacia el borde. */
+import Photo from '../ui/Photo.astro';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  text: string;
+  primary: { label: string; href: string };
+  secondary: { label: string; href: string };
+  image: { alt: string; label: string; photo?: string; focus?: string };
+}
+const { eyebrow, title, text, primary, secondary, image } = Astro.props;
+---
+
+<section class="pl" aria-labelledby="pl-title">
+  <div class="container">
+    <div class="pl__box">
+      <div class="pl__copy">
+        <p class="kicker pl__kicker" data-reveal>{eyebrow}</p>
+        <h2 id="pl-title" class="display" data-reveal style="--i:1">{title}</h2>
+        <p class="pl__text" data-reveal style="--i:2">{text}</p>
+        <div class="btn-row" data-reveal style="--i:3">
+          <a class="btn btn--light" href={primary.href}>{primary.label} <Icon name="arrow" size={18} /></a>
+          <a class="btn btn--outline-light" href={secondary.href}>{secondary.label}</a>
+        </div>
+      </div>
+      <div class="pl__media">
+        <Photo fill sizes="(max-width: 960px) 100vw, 50vw" photo={image.photo} focus={image.focus} alt={image.alt} label={image.label} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pl { padding-block: var(--space-section) 0; }
+  .pl__box {
+    display: grid;
+    overflow: hidden;
+    border-radius: calc(var(--radius) * 1.75);
+    background:
+      radial-gradient(120% 140% at 0% 100%, rgb(141 192 68 / 0.25) 0%, transparent 55%),
+      linear-gradient(135deg, var(--zagos-green-dark) 0%, #1c7a2c 100%);
+    color: var(--c-on-dark);
+  }
+  .pl__copy {
+    display: grid;
+    gap: var(--space-md);
+    align-content: center;
+    justify-items: start;
+    padding: clamp(2rem, 1.25rem + 4vw, 4.5rem);
+  }
+  .pl__copy .kicker { margin-bottom: 0; }
+  .pl__kicker { color: #fff; }
+  .pl__kicker::before { background: var(--zagos-green-light); }
+  .pl h2 { color: #fff; }
+  .pl__text { font-size: var(--fs-lg); line-height: 1.6; color: rgb(255 255 255 / 0.85); max-width: 34rem; }
+  .pl__media { position: relative; min-height: 18rem; }
+  .pl__media :global(.img-ph--fill) { background: linear-gradient(160deg, #3a7d2a, #1e5f30); }
+
+  @media (min-width: 60rem) {
+    .pl__box { grid-template-columns: 1.1fr 1fr; min-height: 32rem; }
+    .pl__media { min-height: auto; }
+  }
+</style>

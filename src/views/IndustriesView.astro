@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ListSection from '../components/sections/ListSection.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import { industries } from '../data/pages/industries';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = industries[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.industries[lang] }];
+
+const items = c.items.map((it) => ({
+  id: it.id,
+  title: it.title,
+  text: it.text,
+  cta: it.cta,
+  href: contactHref(lang, { topic: it.id }),
+}));
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.industries} breadcrumbs={crumbs}>
+  <PageHero lang={lang} breadcrumbs={crumbs} eyebrow={c.hero.eyebrow} title={c.hero.title} lead={c.hero.lead} image={c.hero.image} />
+
+  <ListSection id="industries" title={c.hero.eyebrow} items={items} />
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: contactHref(lang) }} />
+</BaseLayout>

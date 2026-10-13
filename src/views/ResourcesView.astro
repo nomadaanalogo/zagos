@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/sections/Section.astro';
+import ListSection from '../components/sections/ListSection.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Card from '../components/ui/Card.astro';
+import Grid from '../components/ui/Grid.astro';
+import { resources } from '../data/pages/resources';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = resources[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.resources[lang] }];
+const requestHref = contactHref(lang, { topic: 'documents' });
+
+const docs = c.downloads.items.map((d) => ({
+  title: d.title,
+  tags: [d.type],
+  cta: c.downloads.request,
+  href: requestHref,
+}));
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.resources} breadcrumbs={crumbs}>
+  <PageHero lang={lang} breadcrumbs={crumbs} eyebrow={c.hero.eyebrow} title={c.hero.title} lead={c.hero.lead} image={c.hero.image} />
+
+  <!-- Categorías (los artículos se enlazarán aquí cuando existan) -->
+  <Section id="topics" eyebrow={c.categories.eyebrow} title={c.categories.title}>
+    <Grid cols={3}>
+      {c.categories.cards.map((cat, i) => (
+        <Card icon={cat.icon} title={cat.title} text={cat.text} delay={i % 3}>
+          <span class="soon">{c.categories.soon}</span>
+        </Card>
+      ))}
+    </Grid>
+  </Section>
+
+  <!-- Descargables -->
+  <ListSection id="downloads" tone="alt" eyebrow={c.downloads.eyebrow} title={c.downloads.title} lead={c.downloads.lead} items={docs} />
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: requestHref }} />
+</BaseLayout>
+
+<style>
+  .soon {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--c-surface-2);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--c-brand);
+  }
+</style>

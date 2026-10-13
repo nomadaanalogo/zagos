@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/sections/Section.astro';
+import Split from '../components/sections/Split.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Checklist from '../components/ui/Checklist.astro';
+import Credentials from '../components/ui/Credentials.astro';
+import Icon from '../components/ui/Icon.astro';
+import { quality } from '../data/pages/quality';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = quality[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.quality[lang] }];
+const docsHref = contactHref(lang, { topic: 'quality-docs' });
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.quality} breadcrumbs={crumbs}>
+  <PageHero
+    lang={lang}
+    breadcrumbs={crumbs}
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    image={c.hero.image}
+    ctas={[{ label: c.hero.cta, href: docsHref }]}
+  />
+
+  <!-- 8.1 Del campo a la planta -->
+  <Split id="origin" eyebrow={c.origin.eyebrow} title={c.origin.title} image={c.origin.image}>
+    <p class="prose">{c.origin.text}</p>
+  </Split>
+
+  <!-- 8.2 Controles en planta -->
+  <Split id="plant-controls" tone="dark" reverse eyebrow={c.plant.eyebrow} title={c.plant.title} image={c.plant.image}>
+    <Checklist items={c.plant.items} />
+  </Split>
+
+  <!-- 8.3 Credenciales -->
+  <Section id="credentials" eyebrow={c.credentials.eyebrow} title={c.credentials.title}>
+    <Credentials lang={lang} />
+  </Section>
+
+  <!-- 8.4 Atributos de producto -->
+  <Section id="attributes" tone="alt" eyebrow={c.attributes.eyebrow} title={c.attributes.title} lead={c.attributes.lead}>
+    <ul class="attrs cell-grid">
+      {c.attributes.items.map((a, i) => (
+        <li data-reveal style={`--i:${i}`}>
+          <Icon name="shield" size={28} />
+          <span>{a}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="attrs__note">{c.attributes.note}</p>
+  </Section>
+
+  <!-- 8.5 Documentación -->
+  <Section id="documentation" eyebrow={c.docs.eyebrow} title={c.docs.title}>
+    <Checklist items={c.docs.items} cols={2} />
+  </Section>
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: docsHref }} />
+</BaseLayout>
+
+<style>
+  .attrs { grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 40rem) { .attrs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .attrs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .attrs li {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+    background: var(--c-bg);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .attrs li :global(svg) { color: var(--c-accent); }
+  .attrs__note { margin-top: var(--space-md); font-size: var(--fs-sm); color: var(--c-text-muted); }
+</style>

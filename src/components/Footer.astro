@@ -1,0 +1,99 @@
+---
+import { common, company } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes } from '../i18n/routes';
+import Icon from './ui/Icon.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const f = common[lang].footer;
+const year = new Date().getFullYear();
+const columns = [
+  { title: f.colSite, links: f.siteLinks },
+  { title: f.colCompany, links: f.companyLinks },
+  { title: f.colLegal, links: f.legalLinks },
+];
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a href={routes.home[lang]} class="footer__logo"><img src="/brand/logo-zagos-blanco.webp" alt="ZAGOS Deshidratados" width="570" height="222" loading="lazy" decoding="async" /></a>
+        <p class="footer__legal-name">{company.legalName}</p>
+        <p class="footer__loc">
+          <Icon name="pin" size={18} />
+          {company.locality}, {company.region}, {company.country}
+        </p>
+        <p class="footer__tagline">{f.tagline}</p>
+        <p class="footer__lines">{f.lines}</p>
+      </div>
+      {columns.map((col) => (
+        <nav class="footer__col" aria-label={col.title}>
+          <p class="footer__title">{col.title}</p>
+          <ul>
+            {col.links.map((l) => (
+              <li><a href={routes[l.key][lang]}>{l.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+    <div class="footer__bottom">
+      <p>© {year} {company.legalName} {f.rights}</p>
+      <p class="footer__credit">
+        {f.developedBy} <a href="https://nmdenlaweb.com/" target="_blank" rel="noopener">nmdenlaweb</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--c-dark);
+    color: var(--c-on-dark-muted);
+    font-size: var(--fs-sm);
+    padding-top: var(--space-xl);
+  }
+  .footer a { color: var(--c-on-dark); text-decoration: none; }
+  .footer a:hover { color: #fff; text-decoration: underline; }
+  .footer__grid {
+    display: grid;
+    gap: var(--space-lg) var(--space-md);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .footer__brand { grid-column: 1 / -1; display: grid; gap: 0.5rem; max-width: 26rem; }
+  .footer__logo { display: inline-block; line-height: 0; margin-bottom: 0.5rem; }
+  .footer__logo img { width: auto; height: 64px; }
+  .footer__legal-name { color: var(--c-on-dark); font-weight: 500; }
+  .footer__loc { display: flex; align-items: center; gap: 0.375rem; }
+  .footer__tagline { margin-top: 0.5rem; }
+  .footer__lines { font-size: var(--fs-xs); letter-spacing: 0.02em; }
+  .footer__title {
+    color: var(--c-on-dark);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+  .footer__col ul { list-style: none; padding: 0; display: grid; gap: 0.25rem; }
+  .footer__col a { display: inline-block; padding-block: 0.375rem; }
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-top: var(--space-xl);
+    padding-block: var(--space-md);
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: var(--fs-xs);
+  }
+  .footer__credit a { font-weight: 700; color: var(--zagos-green-light); }
+  .footer__credit a:hover { color: #fff; }
+
+  @media (min-width: 48rem) {
+    .footer__grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    .footer__brand { grid-column: auto; }
+  }
+</style>

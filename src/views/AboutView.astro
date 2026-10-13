@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/sections/Section.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Card from '../components/ui/Card.astro';
+import Icon from '../components/ui/Icon.astro';
+import Photo from '../components/ui/Photo.astro';
+import { about } from '../data/pages/about';
+import { company } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = about[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.about[lang] }];
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.about} breadcrumbs={crumbs}>
+  <PageHero lang={lang} breadcrumbs={crumbs} eyebrow={c.hero.eyebrow} title={c.hero.title} lead={c.hero.lead} image={c.hero.image} />
+
+  <!-- Nuestra forma de trabajar -->
+  <Section id="how-we-work" eyebrow={c.values.eyebrow} title={c.values.title}>
+    <div class="values">
+      {c.values.cards.map((v, i) => <Card index={i + 1} title={v.title} text={v.text} delay={i} />)}
+    </div>
+  </Section>
+
+  <!-- Planta -->
+  <Section id="facility" tone="alt" eyebrow={c.plant.eyebrow} title={c.plant.title} lead={c.plant.text}>
+    <div class="gallery" data-reveal>
+      {c.plant.images.map((img, i) => (
+        <Photo photo={img.photo} focus={img.focus} sizes={i === 0 ? '(max-width: 768px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'} alt={img.alt} label={img.label} ratio={i === 0 ? '16/10' : '4/3'} class={i === 0 ? 'gallery__main' : undefined} />
+      ))}
+    </div>
+    <p class="address" data-reveal>
+      <Icon name="pin" size={22} />
+      <span><strong>{c.plant.addressLabel}</strong>{company.street}, {company.locality}, {company.region}, {company.country}</span>
+    </p>
+  </Section>
+
+  <!-- Misión y visión -->
+  <section class="purpose" aria-labelledby="purpose-title">
+    <div class="container">
+      <p class="kicker" data-reveal>{c.purpose.eyebrow}</p>
+      <h2 id="purpose-title" class="sr-only">{c.purpose.title}</h2>
+      <div class="purpose__grid">
+        {[c.purpose.mission, c.purpose.vision].map((p, i) => (
+          <figure class="purpose__item" data-reveal style={`--i:${i}`}>
+            <figcaption class="purpose__label">{p.title}</figcaption>
+            <blockquote class="purpose__text">{p.text}</blockquote>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: contactHref(lang) }} />
+</BaseLayout>
+
+<style>
+  .values {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 1.5vw, 3rem) clamp(1.5rem, 1rem + 2vw, 3rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
+  }
+
+  .gallery { display: grid; gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem); }
+  @media (min-width: 48rem) {
+    .gallery { grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; }
+    .gallery :global(.gallery__main) { grid-row: span 2; height: 100%; aspect-ratio: auto !important; }
+  }
+  .address {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-top: var(--space-lg);
+    font-size: var(--fs-lg);
+    color: var(--c-text-muted);
+  }
+  .address :global(svg) { color: var(--c-brand); flex-shrink: 0; margin-top: 0.15em; }
+  .address strong { display: block; color: var(--c-text); font-size: var(--fs-xs); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .purpose {
+    padding-block: var(--space-section);
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgb(100 167 0 / 0.16) 0%, transparent 60%),
+      var(--c-dark);
+    color: var(--c-on-dark);
+  }
+  .purpose .kicker { color: var(--zagos-green-light); margin-bottom: var(--space-xl); }
+  .purpose__grid { display: grid; gap: var(--space-xl); }
+  .purpose__item { margin: 0; padding-top: var(--space-md); border-top: 2px solid rgb(255 255 255 / 0.15); }
+  .purpose__label {
+    margin-bottom: var(--space-md);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--zagos-green-light);
+  }
+  .purpose__text {
+    margin: 0;
+    font-size: clamp(1.375rem, 1.1rem + 1.1vw, 2rem);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: #fff;
+  }
+  @media (min-width: 60rem) {
+    .purpose__grid { grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 6rem); }
+  }
+</style>

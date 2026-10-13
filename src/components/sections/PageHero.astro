@@ -1,0 +1,126 @@
+---
+/**
+ * Hero de páginas internas: foto de fondo (o degradado de marca si no hay foto),
+ * texto alineado a la izquierda, migas de pan y único H1.
+ * Admite *resaltado* en title y lead (ver utils/highlight).
+ */
+import Breadcrumbs from '../ui/Breadcrumbs.astro';
+import Photo from '../ui/Photo.astro';
+import Icon from '../ui/Icon.astro';
+import { highlight } from '../../utils/highlight';
+import type { Lang } from '../../i18n/config';
+import type { Crumb } from '../../layouts/BaseLayout.astro';
+
+interface Cta { label: string; href: string }
+
+interface Props {
+  lang: Lang;
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  note?: string;
+  ctas?: Cta[];
+  /** Foto de fondo. Sin imagen se usa el degradado de marca. */
+  image?: { alt: string; label?: string; photo?: string; focus?: string };
+  breadcrumbs?: Crumb[];
+  /** "compact" para páginas utilitarias (contacto, legal, 404) */
+  size?: 'default' | 'compact';
+}
+
+const { lang, eyebrow, title, lead, note, ctas = [], image, breadcrumbs, size = 'default' } = Astro.props;
+// La etiqueta del placeholder indica la medida de la foto de fondo
+const bgLabel = image?.label ? `${image.label.replace(/\s+—\s+[\d:]+.*$/, '')} — fondo 2560×1200` : undefined;
+---
+
+<section class:list={['ph', `ph--${size}`]} aria-labelledby="page-title">
+  {image && (
+    <div class="ph__media">
+      <Photo fill priority sizes="100vw" photo={image.photo} focus={image.focus} alt={image.alt} label={bgLabel} />
+    </div>
+  )}
+  <div class:list={['ph__scrim', { 'ph__scrim--photo': image }]} aria-hidden="true"></div>
+
+  <div class="container ph__inner">
+    {breadcrumbs && <Breadcrumbs lang={lang} items={breadcrumbs} tone="light" />}
+    <div class="ph__copy">
+      {eyebrow && <p class="kicker ph__kicker">{eyebrow}</p>}
+      <h1 id="page-title" set:html={highlight(title)} />
+      {lead && <p class="ph__lead" set:html={highlight(lead)} />}
+      {note && <p class="ph__note">{note}</p>}
+      <slot />
+      {ctas.length > 0 && (
+        <div class="btn-row ph__ctas">
+          {ctas.map((c, i) => (
+            <a class:list={['btn', i === 0 ? 'btn--light' : 'btn--outline-light']} href={c.href}>
+              {c.label}
+              {i === 0 && <Icon name="arrow" size={18} />}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ph {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(28rem, 68svh, 42rem);
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+    overflow: hidden;
+    color: #fff;
+    background:
+      radial-gradient(70% 90% at 100% 0%, rgb(100 167 0 / 0.22) 0%, transparent 60%),
+      linear-gradient(160deg, #1a5a2f 0%, var(--c-dark) 100%);
+  }
+  .ph--compact { min-height: clamp(20rem, 42svh, 28rem); }
+  .ph__media { position: absolute; inset: 0; z-index: -2; }
+  .ph__media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ph__scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .ph__scrim--photo {
+    background:
+      /* Velo fuerte del lado del texto (funciona también con fotos de estudio de fondo blanco) */
+      linear-gradient(90deg, rgb(6 32 17 / 0.9) 0%, rgb(6 32 17 / 0.78) 40%, rgb(6 32 17 / 0.3) 75%, rgb(6 32 17 / 0.15) 100%),
+      linear-gradient(180deg, rgb(6 32 17 / 0) 40%, rgb(6 32 17 / 0.45) 100%);
+  }
+
+  .ph__inner { display: grid; gap: clamp(2rem, 1rem + 4vw, 4rem); height: 100%; align-content: space-between; }
+  .ph__copy { max-width: 48rem; }
+  .ph__kicker { color: var(--zagos-green-light); }
+  .ph__kicker::before { background: var(--zagos-green-light); }
+  .ph h1 {
+    color: #fff;
+    font-size: clamp(1.875rem, 1.3rem + 2.3vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 24px rgb(0 0 0 / 0.15);
+  }
+  .ph h1 :global(.hl) { color: var(--zagos-green-light); }
+  .ph__lead {
+    max-width: 40rem;
+    margin-top: var(--space-md);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+    line-height: 1.65;
+    color: rgb(255 255 255 / 0.82);
+  }
+  .ph__lead :global(.hl) { color: #fff; font-weight: 700; }
+  .ph__note {
+    max-width: 40rem;
+    margin-top: var(--space-md);
+    padding-left: var(--space-sm);
+    border-left: 3px solid var(--zagos-green-light);
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.75);
+  }
+  .ph__ctas { margin-top: var(--space-lg); }
+</style>
+<style>
+  /* En móvil el texto ocupa todo el ancho: velo parejo */
+  @media (max-width: 47.99rem) {
+    .ph__scrim--photo { background: linear-gradient(180deg, rgb(6 32 17 / 0.7) 0%, rgb(6 32 17 / 0.82) 100%); }
+  }
+</style>

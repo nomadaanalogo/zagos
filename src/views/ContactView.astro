@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Checklist from '../components/ui/Checklist.astro';
+import Icon from '../components/ui/Icon.astro';
+import { contact } from '../data/pages/contact';
+import { company } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = contact[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.contact[lang] }];
+
+const contactPage = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: c.seo.title,
+  url: new URL(routes.contact[lang], Astro.site).href,
+  about: { '@id': new URL('/#organization', Astro.site).href },
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.seo.title}
+  description={c.seo.description}
+  alternates={routes.contact}
+  breadcrumbs={crumbs}
+  jsonLd={[contactPage]}
+>
+  <PageHero lang={lang} size="compact" breadcrumbs={crumbs} eyebrow={c.hero.eyebrow} title={c.hero.title} lead={c.hero.lead} />
+
+  <section class="contact" aria-label={c.form.legendProject}>
+    <div class="container contact__grid">
+      <ContactForm lang={lang} />
+
+      <aside class="contact__aside">
+        <div class="aside-box">
+          <h2 class="aside-box__title">{c.aside.title}</h2>
+          <Checklist items={c.aside.items} />
+        </div>
+        <div class="aside-box">
+          <h2 class="aside-box__title">{c.aside.locationTitle}</h2>
+          <p class="aside-box__addr">
+            <Icon name="pin" size={20} />
+            <span>
+              {company.legalName}<br />
+              {company.street}<br />
+              {company.locality}, {company.region}<br />
+              {company.country}
+            </span>
+          </p>
+          {company.email && (
+            <p class="aside-box__addr">
+              <Icon name="mail" size={20} />
+              <a href={`mailto:${company.email}`}>{company.email}</a>
+            </p>
+          )}
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) var(--space-section); }
+  .contact__grid { display: grid; gap: var(--space-xl); align-items: start; }
+  .contact__aside { display: grid; gap: var(--space-md); }
+  .aside-box {
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+  }
+  .aside-box__title { font-size: var(--fs-h3); margin-bottom: var(--space-sm); }
+  .aside-box__addr { display: flex; align-items: flex-start; gap: 0.625rem; color: var(--c-text-muted); }
+  .aside-box__addr + .aside-box__addr { margin-top: var(--space-sm); }
+  .aside-box__addr :global(svg) { flex-shrink: 0; color: var(--c-brand); margin-top: 0.2em; }
+
+  @media (min-width: 64rem) {
+    .contact__grid { grid-template-columns: minmax(0, 1fr) 20rem; }
+    .contact__aside { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+  }
+</style>

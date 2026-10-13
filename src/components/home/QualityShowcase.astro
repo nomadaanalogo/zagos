@@ -1,0 +1,81 @@
+---
+/** Calidad: composición de dos fotos + texto. */
+import Photo from '../ui/Photo.astro';
+import Icon from '../ui/Icon.astro';
+import type { Lang } from '../../i18n/config';
+import { href } from '../../i18n/routes';
+
+interface Img { alt: string; label: string; photo?: string; focus?: string }
+interface Props {
+  lang: Lang;
+  eyebrow: string;
+  title: string;
+  text: string;
+  cta: string;
+  image: Img;
+  imageSecondary: Img;
+}
+const { lang, eyebrow, title, text, cta, image, imageSecondary } = Astro.props;
+---
+
+<section class="qs" aria-labelledby="qs-title">
+  <div class="container qs__grid">
+    <div class="qs__media" data-reveal>
+      <div class="qs__main"><Photo photo={image.photo} focus={image.focus} alt={image.alt} label={image.label} ratio="4/5" /></div>
+      <div class="qs__secondary"><Photo sizes="(max-width: 960px) 50vw, 25vw" photo={imageSecondary.photo} focus={imageSecondary.focus} alt={imageSecondary.alt} label={imageSecondary.label} ratio="1/1" /></div>
+      <span class="qs__badge" aria-hidden="true"><Icon name="shield" size={28} /></span>
+    </div>
+
+    <div class="qs__copy">
+      <p class="kicker" data-reveal>{eyebrow}</p>
+      <h2 id="qs-title" class="display" data-reveal style="--i:1">{title}</h2>
+      <p class="qs__text" data-reveal style="--i:2">{text}</p>
+      <p data-reveal style="--i:3">
+        <a class="btn btn--primary" href={href('quality', lang)}>
+          {cta} <Icon name="arrow" size={18} />
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .qs {
+    padding-block: var(--space-section);
+    background: var(--c-surface);
+    overflow: hidden;
+  }
+  .qs__grid { display: grid; gap: var(--space-xl); align-items: center; }
+  .qs__media {
+    position: relative;
+    padding: 0 18% 14% 0;
+  }
+  .qs__secondary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 46%;
+    border: 6px solid var(--c-surface);
+    border-radius: calc(var(--radius) + 6px);
+  }
+  .qs__badge {
+    position: absolute;
+    top: 8%;
+    right: 8%;
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--c-brand);
+    color: #fff;
+    box-shadow: 0 10px 30px rgb(17 106 56 / 0.35);
+  }
+  .qs__copy { display: grid; gap: var(--space-md); justify-items: start; }
+  .qs__copy .kicker { margin-bottom: 0; }
+  .qs__text { font-size: var(--fs-lg); line-height: 1.6; color: var(--c-text-muted); max-width: 36rem; }
+
+  @media (min-width: 60rem) {
+    .qs__grid { grid-template-columns: 1fr 1fr; gap: clamp(3rem, 7vw, 7rem); }
+  }
+</style>

@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { company, common } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes, type Alternates } from '../i18n/routes';
+
+export interface Crumb { label: string; href: string }
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  alternates: Alternates;
+  /** Migas sin incluir "Inicio" (se añade automáticamente) */
+  breadcrumbs?: Crumb[];
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { lang, title, description, alternates, breadcrumbs, image, noindex, jsonLd = [] } = Astro.props;
+const site = Astro.site!;
+const abs = (path: string) => new URL(path, site).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': abs('/#organization'),
+  name: company.brand,
+  legalName: company.legalName,
+  url: abs('/'),
+  logo: abs('/brand/logo-zagos.png'),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.street,
+    addressLocality: company.locality,
+    addressRegion: company.region,
+    addressCountry: company.countryCode,
+  },
+  ...(company.email && { email: company.email }),
+  ...(company.phone && { telephone: company.phone }),
+  ...(company.social.length && { sameAs: company.social }),
+};
+
+const schemas: Record<string, unknown>[] = [organization, ...jsonLd];
+
+if (breadcrumbs?.length) {
+  const items = [{ label: common[lang].breadcrumbHome, href: routes.home[lang] }, ...breadcrumbs];
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.label,
+      item: abs(c.href),
+    })),
+  });
+}
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#116a38" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <!-- Marca que hay JS antes del primer pintado: las animaciones de entrada solo ocultan contenido si JS existe -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <SEO
+      lang={lang}
+      siteName={company.brand}
+      title={title}
+      description={description}
+      alternates={alternates}
+      image={image}
+      noindex={noindex}
+      jsonLd={schemas}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{common[lang].skip}</a>
+    <Header lang={lang} alternates={alternates} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <script>
+      // Entrada suave de elementos con [data-reveal] al aparecer en pantalla
+      const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        items.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          }),
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100%;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    background: var(--c-text);
+    color: var(--c-bg);
+    border-radius: var(--radius-sm);
+  }
+  .skip-link:focus { top: 1rem; }
+</style>

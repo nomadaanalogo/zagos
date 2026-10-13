@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/sections/Section.astro';
+import ListSection from '../components/sections/ListSection.astro';
+import FormatPanels from '../components/home/FormatPanels.astro';
+import QuickQuote from '../components/home/QuickQuote.astro';
+import SpecList from '../components/ui/SpecList.astro';
+import { ingredientDetail, ingredientsPage } from '../data/pages/ingredients';
+import { solutions } from '../data/pages/solutions';
+import { ingredientPages, categories, type Ingredient, type IngredientPage } from '../data/ingredients';
+import { company, formats } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes, href, contactHref, ingredientHref, ingredientAlternates } from '../i18n/routes';
+
+interface Props { lang: Lang; ingredient: Ingredient & { page: IngredientPage } }
+const { lang, ingredient: ing } = Astro.props;
+const d = ingredientDetail[lang];
+const list = ingredientsPage[lang];
+const p = ing.page;
+const name = ing.name[lang];
+
+const crumbs = [
+  { label: list.breadcrumb, href: routes.ingredients[lang] },
+  { label: name, href: ingredientHref(ing.id, lang) },
+];
+
+const formatNames = [
+  ...ing.formats.map((f) => formats[f].name[lang]),
+  ...(ing.formatsNote ? [ing.formatsNote[lang]] : []),
+];
+
+// Paneles de formato: textos de la página Soluciones
+const formatCards = ing.formats.map((f) => {
+  const s = solutions[lang].items.find((i) => i.key === f)!;
+  return { key: f, title: s.title, text: s.text, image: s.image };
+});
+
+const related = ingredientPages
+  .filter((i) => i.id !== ing.id)
+  .slice(0, 4)
+  .map((i) => ({
+    title: i.name[lang],
+    sub: i.altName?.[lang],
+    text: i.summary[lang],
+    tags: i.formats.map((f) => formats[f].name[lang]),
+    href: ingredientHref(i.id, lang),
+  }));
+
+const requestHref = contactHref(lang, { ingredient: ing.id, topic: 'spec' });
+
+const product = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.h1[lang],
+  description: p.seo.description[lang],
+  category: categories[ing.category][lang],
+  brand: { '@type': 'Brand', name: company.brand },
+  manufacturer: { '@id': new URL('/#organization', Astro.site).href },
+  url: new URL(ingredientHref(ing.id, lang), Astro.site).href,
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={p.seo.title[lang]}
+  description={p.seo.description[lang]}
+  alternates={ingredientAlternates(ing.id)}
+  breadcrumbs={crumbs}
+  jsonLd={[product]}
+>
+  <PageHero
+    lang={lang}
+    breadcrumbs={crumbs}
+    eyebrow={categories[ing.category][lang]}
+    title={p.h1[lang]}
+    lead={d.body}
+    image={{ photo: p.photo, alt: d.imageAlt(name), label: d.imageLabel }}
+    ctas={[
+      { label: d.cta, href: requestHref },
+      { label: d.secondary, href: href('solutions', lang) },
+    ]}
+  />
+
+  <!-- Ficha del ingrediente -->
+  <Section id="overview" eyebrow={name} title={d.specTitle}>
+    <div data-reveal>
+      <SpecList
+        items={[
+          { term: d.spec.formats, value: formatNames },
+          { term: d.spec.applications, value: p.applications[lang] },
+          { term: d.spec.specs, value: d.spec.specsValue },
+          { term: d.spec.packaging, value: d.spec.packagingValue },
+        ]}
+      />
+    </div>
+  </Section>
+
+  <!-- Formatos (enlace interno ingrediente → solución) -->
+  {formatCards.length > 0 && (
+    <FormatPanels lang={lang} eyebrow={list.breadcrumb} title={d.formatsTitle} lead="" cards={formatCards} cta={d.viewSolution} />
+  )}
+
+  <!-- Otros ingredientes -->
+  <ListSection id="related" eyebrow={list.breadcrumb} title={d.related} items={related} />
+
+  <!-- Solicitud precargada con este ingrediente -->
+  <QuickQuote lang={lang} eyebrow={d.cta} preselect={{ ingredient: [ing.id], format: ing.formats }} />
+</BaseLayout>

@@ -1,0 +1,275 @@
+---
+/**
+ * Hero del Home: slider de fotos a sangre (fundido + zoom lento tipo Ken Burns) con texto centrado.
+ * Las fotos se definen en data/pages/home.ts (`slides`). La primera es la imagen principal (LCP)
+ * y carga con prioridad; el resto carga en segundo plano.
+ * Accesible: botón de pausa, indicadores navegables, se detiene con la pestaña oculta y
+ * respeta "reducir movimiento" (solo se muestra la primera foto, sin animación).
+ */
+import Photo from '../ui/Photo.astro';
+import Icon from '../ui/Icon.astro';
+import { highlight } from '../../utils/highlight';
+
+interface Slide { photo: string; alt: string; focus?: string }
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  primary: { label: string; href: string };
+  secondary?: { label: string; href: string };
+  slides: Slide[];
+  labels: { pause: string; play: string; goTo: string };
+  /** Milisegundos por foto */
+  interval?: number;
+}
+
+const { eyebrow, title, lead, primary, secondary, slides, labels, interval = 4500 } = Astro.props;
+---
+
+<section class="home-hero" aria-labelledby="page-title">
+  <div class="home-hero__media" data-slider data-interval={interval}>
+    {slides.map((s, i) => (
+      <div class:list={['slide', { 'is-active': i === 0 }]} data-slide>
+        <!-- Solo la primera foto se anuncia; las demás son decorativas -->
+        <Photo fill priority={i === 0} sizes="100vw" photo={s.photo} focus={s.focus} alt={i === 0 ? s.alt : ''} />
+      </div>
+    ))}
+  </div>
+  <div class="home-hero__scrim" aria-hidden="true"></div>
+
+  <div class="container home-hero__content">
+    {eyebrow && <p class="home-hero__eyebrow">{eyebrow}</p>}
+    <h1 id="page-title" set:html={highlight(title)} />
+    {lead && <p class="home-hero__lead" set:html={highlight(lead)} />}
+    <div class="btn-row home-hero__ctas">
+      <a class="btn btn--light" href={primary.href}>
+        {primary.label} <Icon name="arrow" size={18} />
+      </a>
+      {secondary && <a class="btn btn--outline-light" href={secondary.href}>{secondary.label}</a>}
+    </div>
+  </div>
+
+  {slides.length > 1 && (
+    <div class="home-hero__controls" data-slider-controls>
+      <div class="dots">
+        {slides.map((_, i) => (
+          <button
+            type="button"
+            class:list={['dot', { 'is-active': i === 0 }]}
+            data-dot={i}
+            aria-label={`${labels.goTo} ${i + 1} / ${slides.length}`}
+            aria-current={i === 0 ? 'true' : undefined}
+          >
+            <span class="dot__bar"></span>
+          </button>
+        ))}
+      </div>
+      <button type="button" class="pause" data-pause data-label-pause={labels.pause} data-label-play={labels.play} aria-label={labels.pause}>
+        <svg class="pause__icon pause__icon--pause" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" /><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" /></svg>
+        <svg class="pause__icon pause__icon--play" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z" fill="currentColor" /></svg>
+      </button>
+    </div>
+  )}
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-slider]');
+  const controls = document.querySelector<HTMLElement>('[data-slider-controls]');
+  if (root && controls) {
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+    const dots = [...controls.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+    const pauseBtn = controls.querySelector<HTMLButtonElement>('[data-pause]')!;
+    const interval = Number(root.dataset.interval) || 4500;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    let index = 0;
+    let timer: number | undefined;
+    let paused = reduce.matches;
+
+    root.style.setProperty('--slide-ms', `${interval}ms`);
+
+    const show = (next: number) => {
+      if (next === index) return;
+      const prev = slides[index];
+      prev.classList.remove('is-active');
+      prev.classList.add('is-leaving'); // conserva el zoom mientras se desvanece
+      setTimeout(() => prev.classList.remove("is-leaving"), 1200);
+      slides[next].classList.add('is-active');
+      dots[index].classList.remove('is-active');
+      dots[index].removeAttribute('aria-current');
+      dots[next].classList.add('is-active');
+      dots[next].setAttribute('aria-current', 'true');
+      index = next;
+    };
+    const stop = () => { clearInterval(timer); timer = undefined; };
+    const start = () => {
+      stop();
+      if (!paused && !document.hidden) timer = window.setInterval(() => show((index + 1) % slides.length), interval);
+    };
+    const setPaused = (value: boolean) => {
+      paused = value;
+      root.classList.toggle('is-paused', paused);
+      controls.classList.toggle('is-paused', paused);
+      pauseBtn.setAttribute('aria-label', (paused ? pauseBtn.dataset.labelPlay : pauseBtn.dataset.labelPause) ?? '');
+      start();
+    };
+
+    dots.forEach((d, i) => d.addEventListener('click', () => { show(i); start(); }));
+    pauseBtn.addEventListener('click', () => setPaused(!paused));
+    document.addEventListener('visibilitychange', start);
+    reduce.addEventListener('change', (e) => setPaused(e.matches));
+    setPaused(paused);
+  }
+</script>
+
+<style>
+  .home-hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-height: clamp(34rem, calc(100svh - var(--header-h)), 56rem);
+    padding-block: clamp(4rem, 3rem + 6vw, 8rem);
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* ---------- Slider ---------- */
+  .home-hero__media { position: absolute; inset: 0; z-index: -2; background: var(--c-dark); }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.1s ease-in-out;
+  }
+  .slide.is-active { opacity: 1; z-index: 2; }
+  .slide.is-leaving { z-index: 1; }
+  .slide :global(img) { width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 50%; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Zoom lento: el mismo nombre de animación en is-active e is-leaving evita saltos al salir */
+    .slide.is-active :global(img),
+    .slide.is-leaving :global(img) {
+      animation: hero-zoom calc(var(--slide-ms, 4500ms) + 1200ms) ease-out forwards;
+    }
+    .home-hero__media.is-paused .slide :global(img) { animation-play-state: paused; }
+  }
+  @keyframes hero-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+  /* Alternar el punto de fuga del zoom en cada foto */
+  .slide:nth-child(2n) :global(img) { transform-origin: 30% 40%; }
+  .slide:nth-child(3n) :global(img) { transform-origin: 70% 60%; }
+
+  /* Velo para asegurar contraste del texto sobre cualquier foto */
+  .home-hero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(80% 70% at 50% 50%, rgb(6 32 17 / 0.7) 0%, rgb(6 32 17 / 0.38) 100%),
+      linear-gradient(180deg, rgb(6 32 17 / 0.2) 0%, rgb(6 32 17 / 0.5) 100%);
+    pointer-events: none;
+  }
+
+  /* ---------- Texto ---------- */
+  .home-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 52rem;
+  }
+  .home-hero__eyebrow {
+    margin-bottom: var(--space-md);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--zagos-green-light);
+  }
+  .home-hero h1 {
+    color: #fff;
+    font-size: clamp(1.875rem, 1.3rem + 2.3vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 24px rgb(0 0 0 / 0.2);
+  }
+  .home-hero__lead {
+    max-width: 40rem;
+    margin-top: var(--space-md);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+    line-height: 1.65;
+    color: rgb(255 255 255 / 0.85);
+  }
+  /* Palabras resaltadas (*texto* en los datos) */
+  .home-hero h1 :global(.hl) { color: var(--zagos-green-light); }
+  .home-hero__lead :global(.hl) { color: #fff; font-weight: 700; }
+  .home-hero__ctas { justify-content: center; margin-top: var(--space-lg); }
+
+  /* ---------- Controles ---------- */
+  .home-hero__controls {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(1rem, 0.5rem + 2vw, 2rem);
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .dots { display: flex; gap: 0.25rem; }
+  .dot {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px; /* objetivo táctil */
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .dot__bar {
+    position: relative;
+    display: block;
+    width: 28px;
+    height: 3px;
+    border-radius: 3px;
+    background: rgb(255 255 255 / 0.35);
+    overflow: hidden;
+  }
+  .dot__bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .dot.is-active .dot__bar::after { transform: scaleX(1); }
+  @media (prefers-reduced-motion: no-preference) {
+    /* La barra activa se llena durante el tiempo de cada foto */
+    .dot.is-active .dot__bar::after { animation: dot-fill var(--slide-ms, 4500ms) linear forwards; }
+    .home-hero__controls.is-paused .dot.is-active .dot__bar::after { animation: none; transform: scaleX(1); }
+  }
+  @keyframes dot-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .dot:hover .dot__bar { background: rgb(255 255 255 / 0.6); }
+
+  .pause {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.15);
+    color: #fff;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .pause:hover { background: rgb(255 255 255 / 0.15); border-color: #fff; }
+  .pause__icon--play { display: none; }
+  .home-hero__controls.is-paused .pause__icon--pause { display: none; }
+  .home-hero__controls.is-paused .pause__icon--play { display: block; }
+</style>

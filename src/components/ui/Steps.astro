@@ -1,0 +1,66 @@
+---
+/** Proceso numerado como línea de tiempo. Horizontal en escritorio, vertical en móvil. */
+interface Props { steps: { title: string; text: string }[] }
+const { steps } = Astro.props;
+---
+
+<ol class="steps">
+  {steps.map((s, i) => (
+    <li class="steps__item" data-reveal style={`--i:${Math.min(i, 6)}`}>
+      <span class="steps__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <div class="steps__body">
+        <h3 class="steps__title">{s.title}</h3>
+        <p class="steps__text">{s.text}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps { list-style: none; padding: 0; display: grid; }
+
+  /* Móvil: vertical con línea a la izquierda */
+  .steps__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-lg);
+  }
+  .steps__item::before {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    top: 3rem;
+    bottom: 0;
+    width: 2px;
+    background: var(--c-border);
+  }
+  .steps__item:last-child::before { display: none; }
+  .steps__num {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--c-brand);
+    color: #fff;
+    font-weight: 700;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 0 0 6px var(--steps-ring, var(--c-surface));
+  }
+  .steps__title { font-size: var(--fs-h3); letter-spacing: -0.02em; margin-bottom: 0.375rem; padding-top: 0.6rem; }
+  .steps__text { color: var(--c-text-muted); line-height: 1.6; }
+
+  /* Escritorio: horizontal en 4 + 3 columnas, línea superior continua */
+  @media (min-width: 64rem) {
+    .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--space-lg); row-gap: var(--space-xl); }
+    .steps__item { grid-template-columns: 1fr; padding-bottom: 0; }
+    .steps__item::before { left: 3rem; right: calc(var(--space-lg) * -1); top: 1.5rem; bottom: auto; width: auto; height: 2px; }
+    .steps__item:nth-child(4n)::before { display: none; }
+    .steps__title { padding-top: var(--space-xs); }
+  }
+</style>

@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import { privacy } from '../data/pages/contact';
+import { company } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = privacy[lang];
+const crumbs = [{ label: c.title, href: routes.privacy[lang] }];
+---
+
+<!-- TODO: quitar noindex cuando se publique el texto legal definitivo -->
+<BaseLayout lang={lang} title={`${c.title} | ${company.brand}`} description={c.description} alternates={routes.privacy} breadcrumbs={crumbs} noindex>
+  <PageHero lang={lang} size="compact" breadcrumbs={crumbs} title={c.title} lead={company.legalName} note={c.pending} />
+</BaseLayout>

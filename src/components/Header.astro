@@ -1,0 +1,196 @@
+---
+import { common } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref, type Alternates } from '../i18n/routes';
+
+interface Props { lang: Lang; alternates: Alternates }
+const { lang, alternates } = Astro.props;
+const c = common[lang];
+const otherLang: Lang = lang === 'es' ? 'en' : 'es';
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const isCurrent = (href: string) => path === href || (href !== routes.home[lang] && path.startsWith(href));
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a href={routes.home[lang]} class="header__logo" aria-label={c.homeLabel}>
+      <img src="/brand/logo-zagos.webp" alt="ZAGOS Deshidratados" width="570" height="222" decoding="async" />
+    </a>
+
+    <nav id="site-nav" class="header__nav" aria-label={c.menu}>
+      <ul class="header__links">
+        {c.nav.map((item) => {
+          const href = routes[item.key][lang];
+          return (
+            <li>
+              <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{item.label}</a>
+            </li>
+          );
+        })}
+      </ul>
+      <div class="header__actions">
+        <a class="header__lang" href={alternates[otherLang]} hreflang={otherLang} lang={otherLang} title={c.langSwitch}>
+          <span aria-hidden="true">{otherLang.toUpperCase()}</span>
+          <span class="sr-only">{c.langSwitch}</span>
+        </a>
+        <a class="btn btn--primary header__cta" href={contactHref(lang)}>{c.navCta}</a>
+      </div>
+    </nav>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-open={c.menu}
+      data-close={c.close}
+    >
+      <span class="sr-only">{c.menu}</span>
+      <span class="header__bars" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.header__toggle');
+  const nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    const label = toggle.querySelector('.sr-only')!;
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('nav-open', open);
+      label.textContent = (open ? toggle.dataset.close : toggle.dataset.open) ?? '';
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    matchMedia('(min-width: 75rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(255 255 255 / 0.92);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    height: var(--header-h);
+  }
+  .header__logo { display: block; flex-shrink: 0; line-height: 0; }
+  .header__logo img { width: auto; height: 46px; }
+  @media (max-width: 29.99rem) { .header__logo img { height: 40px; } }
+  .header__nav { display: flex; align-items: center; gap: var(--space-md); }
+  .header__links { display: flex; gap: 1.125rem; list-style: none; padding: 0; }
+  .header__links a {
+    position: relative;
+    color: var(--c-text);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    padding-block: 0.5rem;
+  }
+  .header__links a:hover { color: var(--c-brand); }
+  .header__links a[aria-current='page'] { color: var(--c-brand); font-weight: 600; }
+  .header__links a[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: var(--c-brand);
+    border-radius: 2px;
+  }
+  .header__actions { display: flex; align-items: center; gap: 0.75rem; }
+  .header__lang {
+    display: inline-grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--c-border);
+    border-radius: 999px;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--c-text);
+    text-decoration: none;
+  }
+  .header__lang:hover { border-color: var(--c-text); color: var(--c-text); }
+  .header__cta { min-height: 44px; padding-inline: 1.125rem; font-size: 0.9375rem; }
+  .header__toggle { display: none; }
+
+  /* ---------- Móvil / tablet ---------- */
+  @media (max-width: 74.99rem) {
+    .header__toggle {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      margin-right: -12px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: var(--c-text);
+    }
+    .header__bars,
+    .header__bars::before,
+    .header__bars::after {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .header__bars { position: relative; }
+    .header__bars::before,
+    .header__bars::after { content: ''; position: absolute; left: 0; }
+    .header__bars::before { top: -7px; }
+    .header__bars::after { top: 7px; }
+    [aria-expanded='true'] .header__bars { background: transparent; }
+    [aria-expanded='true'] .header__bars::before { transform: translateY(7px) rotate(45deg); }
+    [aria-expanded='true'] .header__bars::after { transform: translateY(-7px) rotate(-45deg); }
+
+    .header__nav {
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: var(--space-lg);
+      padding: var(--space-sm) var(--gutter) var(--space-lg);
+      background: var(--c-bg);
+      overflow-y: auto;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    }
+    .header__nav.is-open { visibility: visible; opacity: 1; transform: none; }
+    .header__links { flex-direction: column; gap: 0; }
+    .header__links a {
+      display: block;
+      padding: 0.9rem 0;
+      font-size: var(--fs-lg);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .header__links a[aria-current='page']::after { display: none; }
+    .header__actions { gap: var(--space-sm); }
+    .header__cta { flex: 1; min-height: 48px; }
+    .header__lang { min-width: 48px; min-height: 48px; }
+  }
+
+  :global(html.nav-open) { overflow: hidden; }
+</style>

@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/sections/Section.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Icon from '../components/ui/Icon.astro';
+import { exportPage } from '../data/pages/export';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = exportPage[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.export[lang] }];
+const exportHref = contactHref(lang, { topic: 'export' });
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.export} breadcrumbs={crumbs}>
+  <PageHero
+    lang={lang}
+    breadcrumbs={crumbs}
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    image={c.hero.image}
+    ctas={[{ label: c.hero.cta, href: exportHref }]}
+  />
+
+  <!-- Experiencia de mercado: tipografía grande + cinta -->
+  <section class="mk" aria-labelledby="mk-title">
+    <div class="container">
+      <div data-reveal>
+        <p class="kicker mk__kicker">{c.markets.eyebrow}</p>
+        <h2 id="mk-title" class="display">{c.markets.title}</h2>
+      </div>
+      <ul class="mk__list">
+        {c.markets.items.map((m, i) => (
+          <li data-reveal style={`--i:${i}`}>
+            <span class="mk__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            {m}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="mk__marquee" aria-hidden="true">
+      <div class="mk__track">
+        {[0, 1].map(() => (
+          <span class="mk__set">
+            {c.markets.items.map((m) => (
+              <span class="mk__word">{m}<Icon name="globe" size={26} class="mk__dot" /></span>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué necesita indicar un comprador -->
+  <Section id="buyer-checklist" eyebrow={c.buyer.eyebrow} title={c.buyer.title} lead={c.buyer.lead}>
+    <ol class="need cell-grid">
+      {c.buyer.items.map((it, i) => (
+        <li data-reveal style={`--i:${Math.min(i, 6)}`}>
+          <span class="need__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span>{it}</span>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: exportHref }} />
+</BaseLayout>
+
+<style>
+  .mk {
+    padding-block: var(--space-section);
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgb(100 167 0 / 0.18) 0%, transparent 60%),
+      var(--c-dark);
+    color: var(--c-on-dark);
+    overflow: hidden;
+  }
+  .mk h2 { color: #fff; }
+  .mk__kicker { color: var(--zagos-green-light); }
+  .mk__list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+  }
+  .mk__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.875rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+    font-size: clamp(1.375rem, 1.15rem + 1vw, 1.875rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .mk__num { font-size: var(--fs-sm); color: var(--zagos-green-light); font-variant-numeric: tabular-nums; }
+
+  .mk__marquee {
+    margin-top: var(--space-xl);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .mk__track { display: flex; width: max-content; animation: mk-marquee 40s linear infinite; }
+  .mk__set { display: flex; }
+  .mk__word {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    padding-right: clamp(1.5rem, 1rem + 2vw, 3rem);
+    font-size: clamp(2.5rem, 1.5rem + 4.5vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.35);
+  }
+  .mk__set :global(.mk__dot) { color: var(--zagos-green); }
+  @keyframes mk-marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .mk__marquee { display: none; } }
+
+  .need {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  }
+  .need li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    background: var(--c-bg);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .need__num { font-size: var(--fs-sm); color: var(--c-accent); }
+</style>

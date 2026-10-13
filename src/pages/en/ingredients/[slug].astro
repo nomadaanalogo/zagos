@@ -1,0 +1,12 @@
+---
+import IngredientDetailView from '../../../views/IngredientDetailView.astro';
+import { ingredientPages } from '../../../data/ingredients';
+
+export function getStaticPaths() {
+  return ingredientPages.map((ingredient) => ({ params: { slug: ingredient.id }, props: { ingredient } }));
+}
+
+const { ingredient } = Astro.props;
+---
+
+<IngredientDetailView lang="en" ingredient={ingredient} />

@@ -1,0 +1,162 @@
+---
+/** Tres formatos como paneles con foto a sangre. En móvil: carrusel deslizable con scroll-snap. */
+import Photo from '../ui/Photo.astro';
+import Icon from '../ui/Icon.astro';
+import { highlight } from '../../utils/highlight';
+import { formats, type FormatKey } from '../../data/common';
+import type { Lang } from '../../i18n/config';
+import { href } from '../../i18n/routes';
+
+interface Card { key: string; title: string; text: string; image: { alt: string; label: string; photo?: string; focus?: string } }
+interface Props { lang: Lang; eyebrow: string; title: string; lead?: string; cards: Card[]; cta: string }
+const { lang, eyebrow, title, lead, cards, cta } = Astro.props;
+---
+
+<section class="fmt" aria-labelledby="fmt-title">
+  <div class="container">
+    <header class="fmt__head">
+      <div data-reveal>
+        <p class="kicker">{eyebrow}</p>
+        <h2 id="fmt-title" class="display" set:html={highlight(title)} />
+      </div>
+      {lead && <p class="lead" data-reveal style="--i:1">{lead}</p>}
+    </header>
+  </div>
+
+  <ul class="fmt__track" style={`--cols:${cards.length};--ratio:${cards.length >= 3 ? "3/4" : cards.length === 2 ? "4/3" : "21/9"}`}>
+    {cards.map((c, i) => {
+      const f = formats[c.key as FormatKey];
+      return (
+        <li class="fmt__item" data-reveal style={`--i:${i}`}>
+          <a class="panel" href={href('solutions', lang, f.anchor)}>
+            <div class="panel__media">
+              <Photo fill sizes="(max-width: 768px) 85vw, 33vw" photo={c.image.photo} focus={c.image.focus} alt={c.image.alt} label={c.image.label} />
+            </div>
+            <div class="panel__shade" aria-hidden="true"></div>
+            <span class="panel__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="panel__body">
+              <span class="panel__icon"><Icon name={f.icon} size={22} /></span>
+              <h3 class="panel__title">{c.title}</h3>
+              <p class="panel__text">{c.text}</p>
+              <span class="panel__cta">{cta} <Icon name="arrow" size={18} /></span>
+            </div>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<style>
+  .fmt {
+    padding-block: var(--space-section);
+    background: var(--c-surface);
+  }
+  .fmt__head {
+    display: grid;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    align-items: end;
+  }
+  @media (min-width: 60rem) {
+    .fmt__head { grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+  }
+
+  /* Pista: carrusel en móvil, rejilla en escritorio */
+  .fmt__track {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(17rem, 82%);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    padding: 0 var(--gutter) 0.5rem;
+    scrollbar-width: none;
+  }
+  .fmt__track::-webkit-scrollbar { display: none; }
+  .fmt__item { scroll-snap-align: start; }
+
+  @media (min-width: 48rem) {
+    .fmt__track {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+      overflow: visible;
+      max-width: calc(var(--container) + var(--gutter) * 2);
+      margin-inline: auto;
+      gap: clamp(1rem, 0.5rem + 1.2vw, 1.5rem);
+    }
+    /* 1–2 formatos: paneles más apaisados para no quedar gigantes */
+    .fmt__track .panel { aspect-ratio: var(--ratio, 3 / 4); min-height: 24rem; }
+  }
+
+  /* Panel */
+  .panel {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    aspect-ratio: 3 / 4;
+    min-height: 26rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+    border-radius: calc(var(--radius) * 1.25);
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+  }
+  .panel__media { position: absolute; inset: 0; z-index: -2; transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  /* Etiqueta del placeholder arriba a la derecha, sin pisar el número */
+  .panel__media :global(.img-ph--fill) {
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 1.25rem 1.25rem 0 50%;
+    text-align: right;
+  }
+  .panel__media :global(.img-ph--fill svg) { display: none; }
+  .panel__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgb(6 32 17 / 0) 25%, rgb(6 32 17 / 0.55) 55%, rgb(6 32 17 / 0.92) 100%);
+  }
+  .panel__num {
+    position: absolute;
+    top: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    left: clamp(1.25rem, 1rem + 1vw, 2rem);
+    font-size: clamp(3rem, 2.25rem + 3vw, 5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgb(255 255 255 / 0.9);
+    -webkit-text-stroke: 0;
+  }
+  .panel__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: 0.875rem;
+    border-radius: 50%;
+    background: var(--zagos-green);
+    color: #fff;
+  }
+  .panel__title { color: #fff; font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem); letter-spacing: -0.025em; }
+  .panel__text { margin-top: 0.5rem; color: rgb(255 255 255 / 0.85); line-height: 1.55; }
+  .panel__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: var(--space-md);
+    font-weight: 700;
+    color: var(--zagos-green-light);
+  }
+  .panel__cta :global(svg) { transition: transform 0.2s; }
+
+  .panel:hover .panel__media,
+  .panel:focus-visible .panel__media { transform: scale(1.05); }
+  .panel:hover .panel__cta :global(svg) { transform: translateX(4px); }
+  .panel:focus-visible { outline-offset: 4px; }
+</style>

@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ListSection, { type ListItem } from '../components/sections/ListSection.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import { ingredientsPage } from '../data/pages/ingredients';
+import { ingredients, type Ingredient } from '../data/ingredients';
+import { formats } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref, ingredientHref } from '../i18n/routes';
+import { plain } from '../utils/highlight';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = ingredientsPage[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.ingredients[lang] }];
+
+// Cada ingrediente como fila: con ficha → enlace a la ficha; sin ficha → solicitar ficha técnica
+const toItem = (i: Ingredient): ListItem => ({
+  id: i.id,
+  title: i.name[lang],
+  sub: i.altName?.[lang],
+  text: i.summary[lang],
+  tags: [...i.formats.map((f) => formats[f].name[lang]), ...(i.formatsNote ? [i.formatsNote[lang]] : [])],
+  href: i.page ? ingredientHref(i.id, lang) : contactHref(lang, { ingredient: i.id, topic: 'tds' }),
+  cta: i.page ? c.viewSheet : c.requestSheet,
+});
+
+const peppers = ingredients.filter((i) => i.category === 'peppers').map(toItem);
+const vegHerbs = ingredients.filter((i) => i.category !== 'peppers').map(toItem);
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: plain(c.hero.title),
+  itemListElement: ingredients
+    .filter((i) => i.page)
+    .map((i, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: i.name[lang],
+      url: new URL(ingredientHref(i.id, lang), Astro.site).href,
+    })),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.seo.title}
+  description={c.seo.description}
+  alternates={routes.ingredients}
+  breadcrumbs={crumbs}
+  jsonLd={[itemList]}
+>
+  <PageHero
+    lang={lang}
+    breadcrumbs={crumbs}
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    note={c.hero.note}
+    image={c.hero.image}
+    ctas={[{ label: c.requestSheet, href: contactHref(lang, { topic: 'tds' }) }]}
+  />
+
+  <ListSection id="peppers" eyebrow={c.peppers.eyebrow} title={c.peppers.title} items={peppers} />
+
+  <ListSection id="vegetables-herbs" tone="alt" eyebrow={c.vegHerbs.eyebrow} title={c.vegHerbs.title} items={vegHerbs} />
+
+  <CtaBand
+    title={c.cta.title}
+    text={c.cta.text}
+    primary={{ label: c.cta.button, href: contactHref(lang, { topic: 'tds' }) }}
+  />
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+/** Dos columnas: texto (slot) + foto. Mismo lenguaje que el Home (kicker + display). */
+import Photo from '../ui/Photo.astro';
+import { highlight } from '../../utils/highlight';
+
+interface Props {
+  id?: string;
+  tone?: 'default' | 'alt' | 'brand' | 'dark';
+  eyebrow?: string;
+  title: string;
+  image: { alt: string; label?: string; ratio?: string; photo?: string; focus?: string };
+  /** Foto a la izquierda en escritorio */
+  reverse?: boolean;
+}
+
+const { id, tone = 'default', eyebrow, title, image, reverse = false } = Astro.props;
+const headingId = `${id ?? 'split'}-title`;
+---
+
+<section id={id} class:list={['split', `split--${tone}`]} aria-labelledby={headingId}>
+  <div class:list={['container', 'split__grid', { 'split__grid--reverse': reverse }]}>
+    <div class="split__copy">
+      <div data-reveal>
+        {eyebrow && <p class="kicker">{eyebrow}</p>}
+        <h2 id={headingId} class="display" set:html={highlight(title)} />
+      </div>
+      <div class="split__body" data-reveal style="--i:1">
+        <slot />
+      </div>
+    </div>
+    <div class="split__media" data-reveal style="--i:1">
+      <Photo photo={image.photo} focus={image.focus} alt={image.alt} label={image.label} ratio={image.ratio ?? '4/5'} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .split { padding-block: var(--space-section); scroll-margin-top: var(--header-h); }
+  .split--alt { background: var(--c-surface); }
+  .split--brand { background: var(--c-brand-soft); }
+  .split--dark {
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgb(100 167 0 / 0.16) 0%, transparent 60%),
+      var(--c-dark);
+    color: var(--c-on-dark);
+  }
+  .split--dark h2 { color: #fff; }
+  .split--dark .kicker { color: var(--zagos-green-light); }
+  .split--dark :global(.prose),
+  .split--dark :global(.lead) { color: var(--c-on-dark-muted); }
+
+  .split h2 :global(.hl) { color: var(--c-brand); }
+  .split--dark h2 :global(.hl) { color: var(--zagos-green-light); }
+
+  .split__grid { display: grid; gap: var(--space-xl); align-items: center; }
+  .split__body { margin-top: var(--space-lg); display: grid; gap: var(--space-lg); }
+  .split__body > :global(.lead),
+  .split__body > :global(.prose) { font-size: var(--fs-lg); line-height: 1.6; }
+
+  @media (max-width: 59.99rem) {
+    .split__media :global(.img-ph),
+    .split__media :global(.photo-frame) { aspect-ratio: 16 / 10 !important; }
+  }
+  @media (min-width: 60rem) {
+    .split__grid { grid-template-columns: 1fr 1fr; gap: clamp(3rem, 7vw, 7rem); }
+    .split__grid--reverse .split__media { order: -1; }
+  }
+</style>

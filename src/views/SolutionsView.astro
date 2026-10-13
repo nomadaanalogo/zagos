@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Split from '../components/sections/Split.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import SpecList from '../components/ui/SpecList.astro';
+import Icon from '../components/ui/Icon.astro';
+import { solutions } from '../data/pages/solutions';
+import { formats, type FormatKey } from '../data/common';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = solutions[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.solutions[lang] }];
+type LabelKey = keyof typeof c.labels;
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.solutions} breadcrumbs={crumbs}>
+  <PageHero
+    lang={lang}
+    breadcrumbs={crumbs}
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    image={c.hero.image}
+  >
+    <!-- Índice de formatos -->
+    <ul class="jump">
+      {c.items.map((s, i) => {
+        const f = formats[s.key as FormatKey];
+        return (
+          <li>
+            <a class="jump__link" href={`#${f.anchor}`}>
+              <span class="jump__num">{String(i + 1).padStart(2, '0')}</span>
+              {s.title}
+              <Icon name="arrow" size={16} />
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </PageHero>
+
+  {c.items.map((s, i) => {
+    const f = formats[s.key as FormatKey];
+    return (
+      <Split
+        id={f.anchor}
+        tone={i % 2 === 0 ? 'default' : 'alt'}
+        reverse={i % 2 === 1}
+        eyebrow={`${s.eyebrow} · ${s.title}`}
+        title={s.title}
+        image={s.image}
+      >
+        <p class="lead">{s.text}</p>
+        <SpecList items={s.specs.map(([k, v]) => ({ term: c.labels[k as LabelKey], value: v }))} />
+        <div class="btn-row">
+          <a class="btn btn--primary" href={contactHref(lang, { format: s.key, topic: 'tds' })}>
+            {s.cta} <Icon name="arrow" size={18} />
+          </a>
+        </div>
+      </Split>
+    );
+  })}
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: contactHref(lang) }} />
+</BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--space-lg);
+    list-style: none;
+    padding: 0;
+  }
+  .jump__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 48px;
+    padding: 0.5rem 1.125rem 0.5rem 0.5rem;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    background: rgb(255 255 255 / 0.06);
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .jump__link:hover { background: rgb(255 255 255 / 0.16); border-color: #fff; color: #fff; }
+  .jump__num {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--zagos-green);
+    font-size: var(--fs-xs);
+  }
+</style>

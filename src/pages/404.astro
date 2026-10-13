@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import { routes, contactHref } from '../i18n/routes';
+import type { Lang } from '../i18n/config';
+
+const lang: Lang = Astro.url.pathname.startsWith('/en/') ? 'en' : 'es';
+const copy = {
+  es: { title: 'Página no encontrada', text: 'La página que buscas no existe o fue movida.', home: 'Volver al inicio', contact: 'Contactar' },
+  en: { title: 'Page not found', text: 'The page you are looking for does not exist or has moved.', home: 'Back to home', contact: 'Contact us' },
+}[lang];
+---
+
+<BaseLayout lang={lang} title={`404 — ${copy.title} | ZAGOS`} description={copy.text} alternates={routes.home} noindex>
+  <PageHero
+    size="compact"
+    lang={lang}
+    eyebrow="404"
+    title={copy.title}
+    lead={copy.text}
+    ctas={[
+      { label: copy.home, href: routes.home[lang] },
+      { label: copy.contact, href: contactHref(lang) },
+    ]}
+  />
+</BaseLayout>

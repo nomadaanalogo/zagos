@@ -1,0 +1,66 @@
+---
+/**
+ * Sección estándar con el encabezado del Home: kicker + título display a la izquierda,
+ * lead a la derecha en escritorio. Admite *resaltado* en title.
+ */
+import { highlight } from '../../utils/highlight';
+
+interface Props {
+  id?: string;
+  tone?: 'default' | 'alt' | 'brand' | 'dark';
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  /** Espaciado superior reducido (sección pegada al hero) */
+  tight?: boolean;
+  class?: string;
+}
+
+const { id, tone = 'default', eyebrow, title, lead, tight = false, class: className } = Astro.props;
+const headingId = title ? `${id ?? 'section'}-title` : undefined;
+---
+
+<section
+  id={id}
+  class:list={['section', `section--${tone}`, { 'section--tight': tight }, className]}
+  aria-labelledby={headingId}
+>
+  <div class="container">
+    {title && (
+      <header class:list={['section__head', { 'section__head--split': lead }]}>
+        <div data-reveal>
+          {eyebrow && <p class="kicker">{eyebrow}</p>}
+          <h2 id={headingId} class="display" set:html={highlight(title)} />
+        </div>
+        {lead && <p class="lead" data-reveal style="--i:1">{lead}</p>}
+      </header>
+    )}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section { padding-block: var(--space-section); scroll-margin-top: var(--header-h); }
+  .section--tight { padding-top: clamp(3rem, 2rem + 3vw, 5rem); }
+  .section--alt { background: var(--c-surface); }
+  .section--brand { background: var(--c-brand-soft); }
+  .section--dark {
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgb(100 167 0 / 0.16) 0%, transparent 60%),
+      var(--c-dark);
+    color: var(--c-on-dark);
+  }
+  .section--dark :global(h2),
+  .section--dark :global(h3) { color: #fff; }
+  .section--dark :global(.lead) { color: var(--c-on-dark-muted); }
+  .section--dark :global(.kicker) { color: var(--zagos-green-light); }
+
+  .section__head { display: grid; gap: var(--space-md); margin-bottom: var(--space-xl); }
+  .section__head .lead { max-width: 38rem; }
+  .section__head :global(.hl) { color: var(--c-brand); }
+  .section--dark .section__head :global(.hl) { color: var(--zagos-green-light); }
+
+  @media (min-width: 60rem) {
+    .section__head--split { grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: end; }
+  }
+</style>

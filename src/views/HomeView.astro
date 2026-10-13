@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/sections/HomeHero.astro';
+import TrustBar from '../components/home/TrustBar.astro';
+import IngredientTabs from '../components/home/IngredientTabs.astro';
+import FormatPanels from '../components/home/FormatPanels.astro';
+import SegmentList from '../components/home/SegmentList.astro';
+import QualityShowcase from '../components/home/QualityShowcase.astro';
+import ExportBand from '../components/home/ExportBand.astro';
+import PrivateLabelFeature from '../components/home/PrivateLabelFeature.astro';
+import QuickQuote from '../components/home/QuickQuote.astro';
+import { home } from '../data/pages/home';
+import type { Lang } from '../i18n/config';
+import { routes, href, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = home[lang];
+const credentialsLabel = lang === 'es' ? 'Credenciales' : 'Credentials';
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.home}>
+  <!-- 1 · Hero -->
+  <HomeHero
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    slides={c.hero.slides}
+    labels={c.hero.sliderLabels}
+    primary={{ label: c.hero.ctaPrimary, href: href('solutions', lang) }}
+    secondary={{ label: c.hero.ctaSecondary, href: contactHref(lang) }}
+  />
+
+  <!-- 2 · Credenciales -->
+  <TrustBar lang={lang} label={credentialsLabel} />
+
+  <!-- 3 · Materias primas (pestañas) -->
+  <IngredientTabs lang={lang} {...c.ingredients} />
+
+  <!-- 4 · Tres formas de transformar (paneles con foto) -->
+  <FormatPanels lang={lang} {...c.formats} />
+
+  <!-- 5 · Modelos de negocio (lista por perfil) -->
+  <SegmentList lang={lang} eyebrow={c.models.eyebrow} title={c.models.title} cards={c.models.cards} />
+
+  <!-- 6 · Calidad -->
+  <QualityShowcase lang={lang} {...c.quality} />
+
+  <!-- 7 · Export ready -->
+  <ExportBand lang={lang} {...c.export} />
+
+  <!-- 8 · Private Label -->
+  <PrivateLabelFeature
+    eyebrow={c.privateLabel.eyebrow}
+    title={c.privateLabel.title}
+    text={c.privateLabel.text}
+    image={c.privateLabel.image}
+    primary={{ label: c.privateLabel.cta, href: contactHref(lang, { format: 'private-label' }) }}
+    secondary={{ label: c.privateLabel.secondary, href: href('privateLabel', lang) }}
+  />
+
+  <!-- 9 · Cotizador rápido -->
+  <QuickQuote lang={lang} eyebrow={c.hero.ctaSecondary} />
+</BaseLayout>

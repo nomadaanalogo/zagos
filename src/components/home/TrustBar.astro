@@ -1,0 +1,87 @@
+---
+/**
+ * Banner de credenciales bajo el hero: solo logos (en negro). El nombre aparece como
+ * etiqueta al pasar el mouse, al enfocar con teclado o al tocar en móvil.
+ */
+import Seal from '../ui/Seal.astro';
+import { credentials } from '../../data/common';
+import type { Lang } from '../../i18n/config';
+
+interface Props { lang: Lang; label: string }
+const { lang, label } = Astro.props;
+---
+
+<section class="trust" aria-label={label}>
+  <div class="container">
+    <ul class="trust__list">
+      {credentials[lang].map((c, i) => (
+        <li class="trust__item" data-reveal style={`--i:${i}`} tabindex="0">
+          <Seal text={c.seal} logo={c.logo} size="lg" />
+          <span class="sr-only">{c.name}</span>
+          <span class="trust__tip" aria-hidden="true">{c.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .trust {
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .trust__list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(1.25rem, 0.5rem + 3vw, 4rem);
+    padding-block: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+  }
+  .trust__item {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    outline-offset: 6px;
+    cursor: default;
+    opacity: 0.8;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .trust__item:hover,
+  .trust__item:focus-visible { opacity: 1; transform: translateY(-2px); }
+
+  /* Etiqueta con el nombre */
+  .trust__tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    z-index: 5;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    background: var(--c-dark);
+    color: #fff;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 4px);
+    transition: opacity 0.18s, transform 0.18s;
+  }
+  .trust__tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 6px solid transparent;
+    border-top-color: var(--c-dark);
+    transform: translateX(-50%);
+  }
+  .trust__item:hover .trust__tip,
+  .trust__item:focus .trust__tip,
+  .trust__item:focus-within .trust__tip { opacity: 1; transform: translate(-50%, 0); }
+</style>

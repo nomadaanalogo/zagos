@@ -1,0 +1,50 @@
+---
+/** Módulo técnico escaneable (término → valor). Los valores pueden ser texto o lista. */
+interface Props {
+  items: { term: string; value: string | string[] }[];
+  class?: string;
+}
+const { items, class: className } = Astro.props;
+---
+
+<dl class:list={['spec', className]}>
+  {items.map(({ term, value }) => (
+    <div class="spec__row">
+      <dt>{term}</dt>
+      <dd>
+        {Array.isArray(value) ? (
+          <ul class="spec__chips">
+            {value.map((v) => <li>{v}</li>)}
+          </ul>
+        ) : (
+          value
+        )}
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .spec { display: grid; border-top: 2px solid var(--c-text); }
+  .spec__row { display: grid; gap: 0.5rem; padding: 1.125rem 0; border-bottom: 1px solid var(--c-border); }
+  dt {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-brand);
+  }
+  dd { color: var(--c-text); line-height: 1.55; }
+  .spec__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
+  .spec__chips li {
+    padding: 0.375rem 0.875rem;
+    border-radius: 999px;
+    background: var(--c-brand-soft);
+    color: var(--c-brand-hover);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  @media (min-width: 40rem) {
+    .spec__row { grid-template-columns: 13rem 1fr; gap: var(--space-md); align-items: baseline; }
+  }
+</style>

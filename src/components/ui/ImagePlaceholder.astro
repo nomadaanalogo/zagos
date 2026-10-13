@@ -1,0 +1,75 @@
+---
+/**
+ * Placeholder de imagen. Reserva el espacio exacto (sin saltos de layout / CLS)
+ * y ya lleva el alt definitivo.
+ *
+ * Para cambiarlo por la foto real:
+ *   1. Guardar la foto en src/assets/ con nombre descriptivo (p. ej. habanero-mash-barril.jpg)
+ *   2. import { Image } from 'astro:assets';
+ *      import foto from '../../assets/habanero-mash-barril.jpg';
+ *      <Image src={foto} alt={alt} widths={[480, 800, 1200]} sizes="(max-width: 960px) 100vw, 50vw" />
+ *   Astro genera WebP/AVIF, tamaños responsive, width/height y lazy-loading automáticamente.
+ */
+interface Props {
+  alt: string;
+  /** Proporción, p. ej. "16/9", "4/3", "1/1" */
+  ratio?: string;
+  /** Qué foto va aquí (guía para el diseñador / fotógrafo) */
+  label?: string;
+  /** Ocupa todo el contenedor padre (imágenes de fondo). El padre debe tener position: relative. */
+  fill?: boolean;
+  class?: string;
+}
+
+const { alt, ratio = '16/9', label, fill = false, class: className } = Astro.props;
+---
+
+<div
+  class:list={['img-ph', { 'img-ph--fill': fill }, className]}
+  role="img"
+  aria-label={alt}
+  style={fill ? undefined : `aspect-ratio: ${ratio};`}
+>
+  <svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <circle cx="8.5" cy="8.5" r="1.5" />
+    <path d="m21 15-5-5L5 21" />
+  </svg>
+  <span aria-hidden="true">{label ?? ratio.replace('/', ':')}</span>
+</div>
+
+<style>
+  .img-ph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    background:
+      repeating-linear-gradient(135deg, transparent 0 14px, rgb(255 255 255 / 0.35) 14px 15px),
+      var(--c-placeholder);
+    color: var(--c-placeholder-ink);
+    border-radius: var(--radius);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    padding: 1rem;
+  }
+  .img-ph--fill {
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 1.25rem var(--gutter);
+    background:
+      repeating-linear-gradient(135deg, transparent 0 18px, rgb(255 255 255 / 0.04) 18px 19px),
+      linear-gradient(160deg, #2d6e2a 0%, #1a5a2f 45%, #0d3d22 100%);
+    color: rgb(255 255 255 / 0.55);
+    flex-direction: row;
+    font-size: var(--fs-xs);
+  }
+  .img-ph--fill svg { width: 18px; height: 18px; }
+</style>

@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+import { categories, type Ingredient } from '../../data/ingredients';
+import { formats } from '../../data/common';
+import type { Lang } from '../../i18n/config';
+import { ingredientHref, contactHref } from '../../i18n/routes';
+
+interface Props {
+  lang: Lang;
+  ingredient: Ingredient;
+  viewLabel: string;
+  requestLabel: string;
+}
+const { lang, ingredient: i, viewLabel, requestLabel } = Astro.props;
+const link = i.page
+  ? { href: ingredientHref(i.id, lang), label: viewLabel }
+  : { href: contactHref(lang, { ingredient: i.id, topic: 'tds' }), label: requestLabel };
+---
+
+<article class="ing" id={i.id}>
+  <p class="ing__cat">{categories[i.category][lang]}</p>
+  <h3 class="ing__name">
+    {i.page ? <a href={link.href}>{i.name[lang]}</a> : i.name[lang]}
+  </h3>
+  {i.altName && <p class="ing__alt">{i.altName[lang]}</p>}
+  <p class="ing__text">{i.summary[lang]}</p>
+  {(i.formats.length > 0 || i.formatsNote) && (
+    <ul class="chips ing__formats">
+      {i.formats.map((f) => <li class="chip">{formats[f].name[lang]}</li>)}
+      {i.formatsNote && <li class="chip chip--outline">{i.formatsNote[lang]}</li>}
+    </ul>
+  )}
+  <a class="link-arrow ing__link" href={link.href} aria-label={`${link.label}: ${i.name[lang]}`}>
+    {link.label} <Icon name="arrow" size={18} />
+  </a>
+</article>
+
+<style>
+  .ing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .ing:has(.ing__name a):hover { border-color: var(--c-brand); box-shadow: var(--shadow); }
+  .ing__cat {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-brand);
+  }
+  .ing__name { font-size: var(--fs-h3); }
+  .ing__name a { color: inherit; text-decoration: none; }
+  .ing__name a:hover { color: var(--c-brand); }
+  .ing__alt { margin-top: -0.375rem; font-size: var(--fs-sm); color: var(--c-text-muted); font-style: italic; }
+  .ing__text { color: var(--c-text-muted); }
+  .ing__formats { margin-top: 0.25rem; }
+  .ing__link { margin-top: auto; padding-top: var(--space-xs); }
+</style>

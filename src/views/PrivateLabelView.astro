@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Section from '../components/sections/Section.astro';
+import Split from '../components/sections/Split.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Steps from '../components/ui/Steps.astro';
+import Checklist from '../components/ui/Checklist.astro';
+import Card from '../components/ui/Card.astro';
+import Grid from '../components/ui/Grid.astro';
+import { privateLabel } from '../data/pages/private-label';
+import type { Lang } from '../i18n/config';
+import { routes, contactHref } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = privateLabel[lang];
+const crumbs = [{ label: c.breadcrumb, href: routes.privateLabel[lang] }];
+const projectHref = contactHref(lang, { format: 'private-label' });
+---
+
+<BaseLayout lang={lang} title={c.seo.title} description={c.seo.description} alternates={routes.privateLabel} breadcrumbs={crumbs}>
+  <PageHero
+    lang={lang}
+    breadcrumbs={crumbs}
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    image={c.hero.image}
+    ctas={[{ label: c.hero.cta, href: projectHref }]}
+  />
+
+  <!-- Alcance -->
+  <section class="scope" aria-labelledby="scope-title">
+    <div class="container scope__grid">
+      <h2 id="scope-title" class="kicker" data-reveal>{c.scope.title}</h2>
+      <p class="scope__text" data-reveal style="--i:1">{c.scope.text}</p>
+    </div>
+  </section>
+
+  <!-- Proceso -->
+  <Section id="process" tone="alt" eyebrow={c.process.eyebrow} title={c.process.title}>
+    <Steps steps={c.process.steps} />
+  </Section>
+
+  <!-- Formatos -->
+  <Split id="formats" eyebrow={c.formats.eyebrow} title={c.formats.title} image={c.formats.image}>
+    <Checklist items={c.formats.items} />
+  </Split>
+
+  <!-- Mensajes de confianza -->
+  <Section id="trust" tone="dark" eyebrow={c.trust.eyebrow} title={c.trust.title}>
+    <Grid cols={3}>
+      {c.trust.cards.map((t, i) => <Card icon={t.icon} title={t.title} text={t.text} delay={i} />)}
+    </Grid>
+  </Section>
+
+  <CtaBand title={c.cta.title} text={c.cta.text} primary={{ label: c.cta.button, href: projectHref }} />
+</BaseLayout>
+
+<style>
+  .scope { padding-block: var(--space-section); }
+  .scope__grid { display: grid; gap: var(--space-md); }
+  .scope__text {
+    font-size: clamp(1.375rem, 1.1rem + 1.1vw, 2.125rem);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--c-text);
+    max-width: 52rem;
+  }
+  @media (min-width: 60rem) {
+    .scope__grid { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+    .scope__grid .kicker { padding-top: 0.75rem; }
+  }
+</style>

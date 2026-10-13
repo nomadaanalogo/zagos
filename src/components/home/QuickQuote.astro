@@ -1,0 +1,130 @@
+---
+/**
+ * Cotizador rápido: el visitante marca ingrediente y formato y llega al formulario de contacto
+ * con esas opciones precargadas. Funciona sin JS (GET nativo a /contacto/).
+ * Usa solo textos aprobados del formulario de contacto.
+ */
+import Icon from '../ui/Icon.astro';
+import { contact, contactOptions } from '../../data/pages/contact';
+import type { Lang } from '../../i18n/config';
+import { routes } from '../../i18n/routes';
+import { highlight } from '../../utils/highlight';
+
+interface Props {
+  lang: Lang;
+  eyebrow: string;
+  /** Opciones marcadas de entrada (p. ej. el ingrediente de la ficha) */
+  preselect?: { ingredient?: string[]; format?: string[] };
+}
+const { lang, eyebrow, preselect = {} } = Astro.props;
+const c = contact[lang];
+const { ingredientOptions, formatOptions } = contactOptions;
+---
+
+<section class="qq" aria-labelledby="qq-title">
+  <div class="container">
+    <form class="qq__card" method="get" action={`${routes.contact[lang]}#form`} data-reveal>
+      <div class="qq__head">
+        <p class="kicker">{eyebrow}</p>
+        <h2 id="qq-title" class="display" set:html={highlight(c.hero.title)} />
+        <p class="qq__lead">{c.hero.lead}</p>
+      </div>
+
+      <div class="qq__fields">
+        <fieldset class="qq__group">
+          <legend><span class="qq__step">1</span>{c.form.ingredient}</legend>
+          <div class="qq__chips">
+            {ingredientOptions.map((o) => (
+              <label class="qq__chip">
+                <input type="checkbox" name="ingredient" value={o.value} checked={preselect.ingredient?.includes(o.value)} />
+                <span>{o[lang]}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="qq__group">
+          <legend><span class="qq__step">2</span>{c.form.format}</legend>
+          <div class="qq__chips">
+            {formatOptions.map((o) => (
+              <label class="qq__chip">
+                <input type="checkbox" name="format" value={o.value} checked={preselect.format?.includes(o.value)} />
+                <span>{o[lang]}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <div class="qq__submit">
+          <button class="btn btn--primary" type="submit">
+            {eyebrow} <Icon name="arrow" size={18} />
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .qq { padding-block: var(--space-section); }
+  .qq__card {
+    display: grid;
+    gap: var(--space-xl);
+    padding: clamp(1.5rem, 1rem + 3vw, 4rem);
+    border: 1px solid var(--c-border);
+    border-radius: calc(var(--radius) * 1.75);
+    background:
+      radial-gradient(70% 90% at 100% 0%, var(--c-surface-2) 0%, transparent 60%),
+      var(--c-bg);
+  }
+  .qq__lead { margin-top: var(--space-sm); color: var(--c-text-muted); font-size: var(--fs-lg); line-height: 1.6; max-width: 36rem; }
+
+  .qq__fields { display: grid; gap: var(--space-lg); }
+  .qq__group { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .qq__group legend {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0;
+    margin-bottom: var(--space-sm);
+    font-weight: 700;
+    font-size: var(--fs-lg);
+  }
+  .qq__step {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--c-brand);
+    color: #fff;
+    font-size: var(--fs-sm);
+  }
+  .qq__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .qq__chip { position: relative; cursor: pointer; }
+  .qq__chip input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .qq__chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 1.125rem;
+    border: 1.5px solid var(--c-border);
+    border-radius: 999px;
+    background: var(--c-bg);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .qq__chip:hover span { border-color: var(--c-brand); }
+  .qq__chip input:checked + span { background: var(--c-brand); border-color: var(--c-brand); color: #fff; }
+  .qq__chip input:focus-visible + span { outline: 3px solid var(--c-brand); outline-offset: 2px; }
+  .qq__submit .btn { min-height: 56px; padding-inline: 2rem; font-size: var(--fs-lg); }
+  @media (max-width: 29.99rem) { .qq__submit .btn { width: 100%; } }
+
+  @media (min-width: 64rem) {
+    .qq__card { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+  }
+</style>
+<style>
+  .qq h2 :global(.hl) { color: var(--c-brand); }
+</style>
